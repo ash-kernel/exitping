@@ -18,7 +18,7 @@ ExitPing is a lightweight desktop application that provides real-time internet s
 - **Auto-Testing** — Optional automatic speed tests at configurable intervals
 - **Startup Shortcut** — Launch ExitPing automatically with Windows
 
-## ✨ Features
+## Preview
 
 <img src="assets/readme/preview.png" width=260>
 

@@ -1,0 +1,101 @@
+/* ExitPing Dark SaaS Theme */
+
+/* Main Container */
+#mainContainer {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 rgba(15, 20, 35, 240),
+                                stop:1 rgba(11, 15, 26, 240));
+    border: 2px solid rgba(59, 130, 246, 60);
+    border-radius: 15px;
+}
+
+/* Title Label */
+#titleLabel {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Close Button */
+#closeButton {
+    background: transparent;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+}
+
+#closeButton:hover {
+    background: rgba(239, 68, 68, 200);
+    color: #ffffff;
+}
+
+/* Stats Panel */
+#statsPanel {
+    background: rgba(20, 25, 40, 180);
+    border: 1px solid rgba(59, 130, 246, 40);
+    border-radius: 10px;
+}
+
+/* Stat Labels */
+#statTitle {
+    color: rgba(150, 150, 150, 255);
+    font-size: 11px;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#statValue {
+    color: #3b82f6;
+    font-size: 28px;
+    font-weight: bold;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+#statUnit {
+    color: rgba(150, 150, 150, 255);
+    font-size: 10px;
+    font-weight: normal;
+}
+
+/* Test Button */
+#testButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 rgba(59, 130, 246, 255),
+                                stop:1 rgba(37, 99, 235, 255));
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+#testButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 rgba(99, 170, 255, 255),
+                                stop:1 rgba(59, 130, 246, 255));
+}
+
+#testButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 rgba(37, 99, 235, 255),
+                                stop:1 rgba(29, 78, 216, 255));
+}
+
+#testButton:disabled {
+    background: rgba(60, 60, 70, 255);
+    color: rgba(150, 150, 150, 255);
+}
+
+/* General Widget Styles */
+QWidget {
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+QLabel {
+    color: #ffffff;
+}

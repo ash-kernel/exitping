@@ -1,0 +1,29 @@
+[
+  {
+    "id": "maa",
+    "name": "Chennai, India",
+    "flag": "🇮🇳",
+    "pingHost": "https://1.1.1.1",
+    "downloadUrl": "https://speed.cloudflare.com/__down?bytes=50000000",
+    "uploadHost": "speed.cloudflare.com",
+    "uploadPath": "/__up"
+  },
+  {
+    "id": "sin",
+    "name": "Singapore",
+    "flag": "🇸🇬",
+    "pingHost": "https://speed.cloudflare.com",
+    "downloadUrl": "https://speed.cloudflare.com/__down?bytes=50000000",
+    "uploadHost": "speed.cloudflare.com",
+    "uploadPath": "/__up"
+  },
+  {
+    "id": "fra",
+    "name": "Frankfurt, Germany",
+    "flag": "🇩🇪",
+    "pingHost": "https://1.1.1.1",
+    "downloadUrl": "https://speed.cloudflare.com/__down?bytes=50000000",
+    "uploadHost": "speed.cloudflare.com",
+    "uploadPath": "/__up"
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "name": "exitping",
+  "version": "1.5.0",
+  "main": "main/main.js", 
+  "description": "Modern network speed indicator",
+  "scripts": {
+    "dev": "vite",
+    "etn": "electron main/main.js",
+    "build": "vite build && electron-builder",
+    "start": "vite && electron main/main.js"
+  },
+  "build": {
+    "appId": "com.exitping.app",
+    "productName": "ExitPing",
+    "directories": {
+      "output": "dist_electron"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icons/logo.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "files": [
+      "dist/**/*",
+      "main/**/*",
+      "assets/**/*",
+      "package.json"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "@vitejs/plugin-react": "^6.0.1",
+    "electron": "^41.3.0",
+    "electron-builder": "^26.8.1",
+    "tailwindcss": "^4.2.4",
+    "vite": "^8.0.10"
+  }
+}

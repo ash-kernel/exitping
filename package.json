@@ -1,8 +1,8 @@
 {
   "name": "exitping",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "main": "main/main.js", 
-  "description": "Modern network speed indicator",
+  "description": "Network speed tester",
   "scripts": {
     "dev": "vite",
     "etn": "electron main/main.js",

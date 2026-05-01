@@ -49,6 +49,7 @@ function createWindow() {
     win.loadFile(path.join(__dirname, "../dist/index.html"));
   } else {
     win.loadURL("http://localhost:5173");
+    win.webContents.openDevTools({ mode: 'detach' });
   }
 
   win.once("ready-to-show", () => {
@@ -107,9 +108,9 @@ function createTray() {
       {
         label: "RESTART",
         click: () => {
-          isQuitting = true; // Tell the ghost override to let the app die
-          app.relaunch();    // Queue a fresh instance
-          app.quit();        // Kill this instance
+          isQuitting = true; 
+          app.relaunch();    
+          app.quit();        
         }
       },
       { type: "separator" },
@@ -151,6 +152,21 @@ app.on("second-instance", () => {
 app.whenReady().then(() => {
   createWindow();
   createTray();
+});
+
+// --- BACKEND IPC: WINDOW CONTROLS (NEW) ---
+ipcMain.on("toggle-expand", (event, isExpanded) => {
+  if (!win) return;
+  const targetWidth = isExpanded ? 760 : 380; // Expand to double width, or collapse to original
+  const bounds = win.getBounds();
+
+  // Set the new size, shifting X so it stays anchored to the right side of the screen
+  win.setBounds({
+    x: bounds.x - (targetWidth - bounds.width), 
+    y: bounds.y, 
+    width: targetWidth,
+    height: bounds.height
+  }, true); // The 'true' enables a smooth resize animation where supported
 });
 
 // --- BACKEND IPC: SPEEDTEST ---

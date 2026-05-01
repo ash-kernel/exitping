@@ -1,90 +1,90 @@
 const https = require("https");
+const http = require("http");
 const { performance } = require("perf_hooks");
 
 /**
- * EXTREME POLITE DOWNLOAD ENGINE
- * Strategy: Single-thread saturation with URI-Randomization.
+ * ENTERPRISE DOWNLOAD ENGINE
+ * Dynamically streams the Ookla 'random' image payloads.
+ * Bypasses TCP slow-start with instant parallelism.
  */
 function downloadTest(server, progressCallback, duration = 8000) {
   return new Promise((resolve) => {
-    // We drop to 1 thread. It's better to have 1 working stream 
-    // than 5 blocked ones. Modern fiber can often max out on 1 socket anyway.
-    const numThreads = 1; 
+    const activeThreads = 8; 
     let totalBytes = 0;
     const startTime = performance.now();
     let isFinished = false;
-
+    const threadPool = [];
+    
+    // Auto-detect the dynamic protocol given by the API
+    const protocol = server.downloadUrl.startsWith('https') ? https : http;
+    
     const reportInterval = setInterval(() => {
       const elapsed = (performance.now() - startTime) / 1000;
-      if (elapsed < 0.5) return progressCallback(0);
-
-      const speedMbps = (totalBytes * 8) / (elapsed * 1000000);
-      progressCallback(speedMbps);
+      
+      // 0.5s Warm-up: Skips the initial HTTP handshake delay for UI accuracy
+      if (elapsed > 0.5) {
+        const speedMbps = (totalBytes * 8) / (elapsed * 1000000);
+        progressCallback(speedMbps);
+      }
     }, 100);
 
-    const startThread = (threadId) => {
+    const startThread = (id) => {
       if (isFinished) return;
 
-      // We add a random 't' parameter to the end of the URL.
-      // This bypasses many server-side caches and rate-limiters.
-      const separator = server.downloadUrl.includes('?') ? '&' : '?';
-      const cacheBusterUrl = `${server.downloadUrl}${separator}t=${Date.now()}_${Math.random().toString(36).substring(7)}`;
-
+      // EXTREME CACHE BUSTING: ISPs love to cache the Ookla random JPGs to fake 
+      // your internet speed. This ensures every request bypasses the ISP cache.
+      const url = `${server.downloadUrl}?nocache=${Date.now()}_${id}_${Math.random().toString(36).substring(2, 6)}`;
+      
       const options = {
-        headers: { 
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.5',
-          'Referer': 'https://www.google.com/', // Mimic coming from a search engine
+        headers: {
+          'User-Agent': 'ExitPing-Pro/3.0',
+          'Accept-Encoding': 'identity', // Forces raw byte transfer (No CPU decompression)
           'Connection': 'keep-alive',
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
+          'Cache-Control': 'no-store'
+        },
+        timeout: 5000
       };
-
-      const req = https.get(cacheBusterUrl, options, (res) => {
-        // ULTIMATE BACKOFF
-        if (res.statusCode === 429) {
-          console.warn(`[Thread ${threadId}] Server is really mad. Waiting 3 seconds...`);
-          res.resume();
-          // Wait 3 seconds to let the server's cooldown timer reset
-          if (!isFinished) setTimeout(() => startThread(threadId), 3000);
-          return;
-        }
-
-        if (res.statusCode !== 200) {
-          console.error(`[Thread ${threadId}] Failed (Code: ${res.statusCode}). Retrying...`);
-          res.resume();
-          if (!isFinished) setTimeout(() => startThread(threadId), 1000);
-          return;
-        }
-
+      
+      const req = protocol.get(url, options, (res) => {
+        // Direct to Network Interface (Bypass Node.js buffering delays)
+        if (res.socket) res.socket.setNoDelay(true);
+        
         res.on("data", (chunk) => {
           if (!isFinished) totalBytes += chunk.length;
-          else res.destroy();
         });
-
+        
         res.on("end", () => {
-          if (!isFinished) startThread(threadId); 
+          // If the file finishes downloading before 8s, restart the thread instantly
+          if (!isFinished) setImmediate(() => startThread(id));
         });
       });
-
-      req.on("error", (err) => {
-        if (!isFinished) setTimeout(() => startThread(threadId), 1000);
+      
+      req.on("error", () => {
+        if (!isFinished) setTimeout(() => startThread(id), 200);
       });
+      
+      threadPool[id] = req;
     };
-
-    // Start our single polite thread
-    startThread(0);
-
+    
+    // Launch the saturation attack
+    for (let i = 0; i < activeThreads; i++) {
+      startThread(i);
+    }
+    
+    // Strict kill switch
     setTimeout(() => {
       isFinished = true;
       clearInterval(reportInterval);
+      
+      // Nuke the connections
+      threadPool.forEach(req => { if (req) req.destroy(); });
+      
       const finalElapsed = (performance.now() - startTime) / 1000;
       const finalSpeed = (totalBytes * 8) / (finalElapsed * 1000000);
-      resolve(finalSpeed);
+      
+      resolve(finalSpeed > 0 ? finalSpeed : 0);
     }, duration);
   });
 }
 
-module.exports = { downloadTest };
+module.exports = downloadTest;

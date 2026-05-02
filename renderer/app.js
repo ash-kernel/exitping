@@ -419,7 +419,7 @@ if (isAutoTestEnabled) {
 
 setTimeout(refreshGamePings, 2000);
 
-// --- HISTORY ENGINE ---
+// history engine
 function loadHistory() {
   if (!historyListEl) return;
   const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");

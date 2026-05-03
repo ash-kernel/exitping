@@ -3,9 +3,7 @@ const http = require("http");
 const { performance } = require("perf_hooks");
 
 /**
- * ENTERPRISE DOWNLOAD ENGINE
- * Dynamically streams the Ookla 'random' image payloads.
- * Bypasses TCP slow-start with instant parallelism.
+ * Download speed test with multi-threaded requests
  */
 function downloadTest(server, progressCallback, duration = 8000) {
   return new Promise((resolve) => {
@@ -15,30 +13,57 @@ function downloadTest(server, progressCallback, duration = 8000) {
     let isFinished = false;
     const threadPool = [];
     
-    // Auto-detect the dynamic protocol given by the API
+    let smoothedSpeed = 0;
+    const smoothingFactor = 0.2; 
+    let lastBytes = 0;
+    let lastTime = 0;
+    let tickBuffer = [];
+    
     const protocol = server.downloadUrl.startsWith('https') ? https : http;
     
     const reportInterval = setInterval(() => {
       const elapsed = (performance.now() - startTime) / 1000;
       
-      // 0.5s Warm-up: Skips the initial HTTP handshake delay for UI accuracy
-      if (elapsed > 0.5) {
-        const speedMbps = (totalBytes * 8) / (elapsed * 1000000);
-        progressCallback(speedMbps);
+      if (elapsed < 1.0) {
+        lastBytes = totalBytes;
+        lastTime = elapsed;
+        return;
       }
-    }, 100);
+      
+      const intervalBytes = totalBytes - lastBytes;
+      const intervalTime = elapsed - lastTime;
+      
+      if (intervalTime > 0) {
+        const instantSpeed = (intervalBytes * 8) / (intervalTime * 1000000);
+        tickBuffer.push(instantSpeed);
+        if (tickBuffer.length > 3) tickBuffer.shift();
+        
+        if (tickBuffer.length === 3) {
+          const sorted = [...tickBuffer].sort((a, b) => a - b);
+          const stableSpeed = sorted[1]; 
+          
+          if (smoothedSpeed === 0) {
+            smoothedSpeed = stableSpeed * 0.85;
+          } else {
+            smoothedSpeed = smoothedSpeed * (1 - smoothingFactor) + stableSpeed * smoothingFactor;
+          }
+          progressCallback(smoothedSpeed);
+        }
+      }
+
+      lastBytes = totalBytes;
+      lastTime = elapsed;
+    }, 150);
 
     const startThread = (id) => {
       if (isFinished) return;
 
-      // EXTREME CACHE BUSTING: ISPs love to cache the Ookla random JPGs to fake 
-      // your internet speed. This ensures every request bypasses the ISP cache.
       const url = `${server.downloadUrl}?nocache=${Date.now()}_${id}_${Math.random().toString(36).substring(2, 6)}`;
       
       const options = {
         headers: {
           'User-Agent': 'ExitPing-Pro/3.0',
-          'Accept-Encoding': 'identity', // Forces raw byte transfer (No CPU decompression)
+          'Accept-Encoding': 'identity',
           'Connection': 'keep-alive',
           'Cache-Control': 'no-store'
         },
@@ -46,7 +71,6 @@ function downloadTest(server, progressCallback, duration = 8000) {
       };
       
       const req = protocol.get(url, options, (res) => {
-        // Direct to Network Interface (Bypass Node.js buffering delays)
         if (res.socket) res.socket.setNoDelay(true);
         
         res.on("data", (chunk) => {
@@ -54,7 +78,6 @@ function downloadTest(server, progressCallback, duration = 8000) {
         });
         
         res.on("end", () => {
-          // If the file finishes downloading before 8s, restart the thread instantly
           if (!isFinished) setImmediate(() => startThread(id));
         });
       });
@@ -66,17 +89,14 @@ function downloadTest(server, progressCallback, duration = 8000) {
       threadPool[id] = req;
     };
     
-    // Launch the saturation attack
     for (let i = 0; i < activeThreads; i++) {
       startThread(i);
     }
     
-    // Strict kill switch
     setTimeout(() => {
       isFinished = true;
       clearInterval(reportInterval);
       
-      // Nuke the connections
       threadPool.forEach(req => { if (req) req.destroy(); });
       
       const finalElapsed = (performance.now() - startTime) / 1000;

@@ -17,7 +17,10 @@ contextBridge.exposeInMainWorld("api", {
   // UI Expansion
   toggleExpand: (isExpanded) => ipcRenderer.send("toggle-expand", isExpanded),
 
-  // OS Settings (Restored!)
+  // OS Settings
   getAutoLaunch: () => ipcRenderer.invoke("get-autolaunch"),
-  setAutoLaunch: (enable) => ipcRenderer.send("set-autolaunch", enable)
+  setAutoLaunch: (enable) => ipcRenderer.send("set-autolaunch", enable),
+
+  // NEW: Bulletproof Network Fetcher
+  getNetworkIdentity: () => ipcRenderer.invoke("get-network-identity")
 });

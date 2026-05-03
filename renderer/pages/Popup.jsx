@@ -22,8 +22,8 @@ export default function Popup() {
         setActivePhase('Download');
         setStatus('Testing Download...');
         if (data.status === 'progress' || data.status === 'done') {
-          setDownload(data.speed.toFixed(2)); // Live update bottom box
-          setCurrentDialSpeed(data.speed);    // Live update dial
+          setDownload(data.speed.toFixed(2));
+          setCurrentDialSpeed(data.speed);
         }
       }
 
@@ -31,8 +31,8 @@ export default function Popup() {
         setActivePhase('Upload');
         setStatus('Testing Upload...');
         if (data.status === 'progress' || data.status === 'done') {
-          setUpload(data.speed.toFixed(2));   // Live update bottom box
-          setCurrentDialSpeed(data.speed);    // Live update dial
+          setUpload(data.speed.toFixed(2));
+          setCurrentDialSpeed(data.speed);
         }
       }
     });
@@ -40,7 +40,7 @@ export default function Popup() {
     window.api.onResult((finalData) => {
       setStatus('Test Complete');
       setIsTesting(false);
-      setCurrentDialSpeed(0); // Reset dial
+      setCurrentDialSpeed(0);
       setPing(finalData.ping);
       setDownload(finalData.download.toFixed(2));
       setUpload(finalData.upload.toFixed(2));

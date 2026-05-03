@@ -64,18 +64,14 @@ export class SpeedometerLogic {
   }
 }
 
-// 2. The React Component wrapper
 export default function Speedometer({ speedValue }) {
   const canvasRef = useRef(null);
   const meterInstance = useRef(null);
 
-  // Initialize the canvas only once when the component mounts
   useEffect(() => {
     if (canvasRef.current && !meterInstance.current) {
       meterInstance.current = new SpeedometerLogic(canvasRef.current);
     }
-    
-    // Cleanup animation loop on unmount to prevent memory leaks
     return () => {
       if (meterInstance.current && meterInstance.current.animationId) {
         cancelAnimationFrame(meterInstance.current.animationId);
@@ -83,7 +79,6 @@ export default function Speedometer({ speedValue }) {
     };
   }, []);
 
-  // Update the target value whenever the prop changes
   useEffect(() => {
     if (meterInstance.current) {
       meterInstance.current.setValue(speedValue || 0);

@@ -4,7 +4,7 @@ const { runSpeedTest } = require("./core/speedtest_engine");
 
 let win = null;
 let tray = null;
-let isQuitting = false; 
+let isQuitting = false;
 
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
@@ -54,8 +54,6 @@ function createWindow() {
 
   win.once("ready-to-show", () => {
     positionWindow();
-    
-    // --- THE SILENT BOOT CHECK ---
     if (!process.argv.includes('--hidden')) {
       win.show();
       win.focus();
@@ -108,8 +106,8 @@ function createTray() {
       {
         label: "RESTART",
         click: () => {
-          isQuitting = true; 
-          app.relaunch();    
+          isQuitting = true;
+          app.relaunch();
           app.quit();        
         }
       },
@@ -152,6 +150,36 @@ app.on("second-instance", () => {
 app.whenReady().then(() => {
   createWindow();
   createTray();
+});
+
+// --- BACKEND IPC: NETWORK IDENTITY (CORS BYPASS) ---
+const https = require("https");
+
+ipcMain.handle("get-network-identity", async () => {
+  return new Promise((resolve) => {
+    const req = https.get('https://ipwho.is/', { timeout: 2000 }, (res) => {
+      let body = "";
+      res.on("data", (chunk) => (body += chunk));
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(body);
+          resolve({ 
+            ip: json.ip || "0.0.0.0", 
+            isp: json.connection?.isp || json.connection?.org || "Network Active", 
+            countryCode: json.country_code ? json.country_code.toLowerCase() : "un"
+          });
+        } catch (e) { 
+          resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un" }); 
+        }
+      });
+    });
+    
+    req.on("error", () => resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un" }));
+    req.on("timeout", () => { 
+      req.destroy(); 
+      resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un" }); 
+    });
+  });
 });
 
 // --- BACKEND IPC: WINDOW CONTROLS (NEW) ---

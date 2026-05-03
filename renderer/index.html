@@ -16,7 +16,7 @@
       <div class="ambient-glow"></div>
       
     <header class="top-bar">
-        <!-- RESTORED: Original Drag Handle (6 dots) -->
+        <!-- Original Drag Handle (6 dots) -->
         <div class="drag-handle">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="9" cy="5" r="1.5"></circle>
@@ -30,12 +30,12 @@
 
         <div class="header-pill">
           <div class="header-text left-align">
-            <span id="clientIsp" class="text-main">Detecting ISP...</span>
-            <span class="text-sub" style="color: var(--accent-cyan);">Protected Connection</span>
+            <span id="clientIsp" class="text-main" style="transition: color 0.4s ease;">Detecting ISP...</span>
+            <span id="connectionStatus" class="text-sub" style="color: var(--accent-cyan); transition: color 0.4s ease;">Protected Connection</span>
           </div>
         </div>
 
-        <!-- Right Side: Expand Icon for Inspector (FIXED CLICK REGION) -->
+        <!-- Right Side: Expand Icon for Inspector -->
         <div style="display: flex; align-items: center; justify-content: flex-end; padding-right: 12px;">
           <div class="icon-ring" id="expandTrigger" style="-webkit-app-region: no-drag; cursor: pointer; position: relative; z-index: 100;" title="Network Inspector">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.3s;" id="expandIcon">
@@ -53,7 +53,7 @@
             <div id="serverFlag" class="center-flag-container"></div>
             
             <div class="readout-container">
-              <!-- RESTORED: Original centre.png Logo -->
+              <!-- Original centre.png Logo -->
               <div id="centerLogo" class="center-logo">
                <img src="centre.png" alt="ExitPing Logo">
               </div>
@@ -118,20 +118,41 @@
       <!-- MAIN SCROLLABLE VIEW -->
       <div class="dashboard-content" style="display: flex; flex-direction: column; height: 100%;">
         
-        <!-- THE NEW SIDEBAR PING/SERVER SECTION -->
-        <div class="network-info-block" style="margin-bottom: 8px; background: rgba(0, 210, 255, 0.05); border: 1px solid rgba(0, 210, 255, 0.1);">
-          <div class="net-info-item" style="flex: 1;">
-            <span class="net-label" style="color: var(--accent-cyan, #00d2ff);">ACTIVE NODE</span>
-            <span id="sidebarServerName" class="net-value" style="font-size: 13px; white-space: normal; line-height: 1.4;">Selecting Node...</span>
+        <!-- THE PRO METRICS SECTION -->
+        <div class="network-info-block" style="margin-bottom: 8px; background: rgba(0, 210, 255, 0.05); border: 1px solid rgba(0, 210, 255, 0.1); display: flex; flex-direction: column;">
+          <!-- Top Row: Node & Latency -->
+          <div style="display: flex; width: 100%; margin-bottom: 8px;">
+            <div class="net-info-item" style="flex: 1;">
+              <span class="net-label" style="color: var(--accent-cyan, #00d2ff);">ACTIVE NODE</span>
+              <span id="sidebarServerName" class="net-value" style="font-size: 13px; white-space: normal; line-height: 1.4;">Selecting Node...</span>
+            </div>
+            <div class="net-divider" style="margin: 0 12px;"></div>
+            <div class="net-info-item right" style="min-width: 60px;">
+              <span class="net-label" style="color: var(--accent-cyan, #00d2ff);">LATENCY</span>
+              <span id="sidebarServerPing" class="net-value" style="font-family: monospace; font-size: 14px;">-- ms</span>
+            </div>
           </div>
-          <div class="net-divider"></div>
-          <div class="net-info-item right" style="min-width: 60px;">
-            <span class="net-label" style="color: var(--accent-cyan, #00d2ff);">LATENCY</span>
-            <span id="sidebarServerPing" class="net-value" style="font-family: monospace; font-size: 14px;">-- ms</span>
+          
+          <!-- Bottom Row: Pro Metrics -->
+          <div style="display: flex; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">
+            <div class="net-info-item" style="flex: 1;">
+              <span class="net-label">JITTER</span>
+              <span id="sidebarJitter" class="net-value" style="font-family: monospace; font-size: 13px;">-- ms</span>
+            </div>
+            <div class="net-divider" style="margin: 0 12px;"></div>
+            <div class="net-info-item" style="flex: 1; text-align: center;">
+              <span class="net-label">LOSS</span>
+              <span id="sidebarLoss" class="net-value" style="font-family: monospace; font-size: 13px;">-- %</span>
+            </div>
+            <div class="net-divider" style="margin: 0 12px;"></div>
+            <div class="net-info-item right" style="flex: 1;">
+              <span class="net-label">GRADE</span>
+              <span id="sidebarGrade" class="net-value" style="font-size: 14px; font-weight: 700; color: #fff;">--</span>
+            </div>
           </div>
         </div>
 
-<!-- NETWORK INFO BLOCK -->
+        <!-- NETWORK INFO BLOCK -->
         <div class="network-info-block" style="align-items: flex-start;">
           <div class="net-info-item" style="flex: 1;">
             <span class="net-label">YOUR IP</span>
@@ -144,6 +165,7 @@
             <span id="dashIsp" class="net-value" style="white-space: normal; word-break: break-word; line-height: 1.3; text-align: right;">Detecting...</span>
           </div>
         </div>
+        
         <!-- GAME LATENCY MONITOR -->
         <div class="game-ping-section accordion-group" style="margin-bottom: 24px;">
           <div class="history-header">
@@ -162,7 +184,7 @@
             <div class="accordion-item" data-id="valorant">
               <div class="game-item accordion-trigger">
                 <div class="game-info">
-                  <span class="game-icon" style="color: #ff4655;">V</span>
+                  <img src="game_logos/valorant.jpg" alt="Valorant" class="game-icon" style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
                   <span class="game-name">Valorant</span>
                 </div>
                 <div class="accordion-chevron">
@@ -171,9 +193,16 @@
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                    <div class="sub-server-item"><span>Mumbai (AP South)</span><span id="pingValMumbai" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Singapore (AP SE)</span><span id="pingValSingapore" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Tokyo (AP NE)</span><span id="pingValTokyo" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>NA East (N. Virginia)</span><span id="pingValNaEast" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>NA Central (Ohio)</span><span id="pingValNaCentral" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>NA West (N. Cali)</span><span id="pingValNaWest" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>SA (São Paulo)</span><span id="pingValSa" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>EU West (London)</span><span id="pingValEuWest" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>EU Central (Frankfurt)</span><span id="pingValEuCentral" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>AP South (Mumbai)</span><span id="pingValMumbai" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>AP SE (Singapore)</span><span id="pingValSingapore" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>AP NE (Tokyo)</span><span id="pingValTokyo" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingValOce" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -182,7 +211,7 @@
             <div class="accordion-item" data-id="cs2">
               <div class="game-item accordion-trigger">
                 <div class="game-info">
-                  <span class="game-icon" style="color: #f59e0b;">C</span>
+                  <img src="game_logos/csgo.png" alt="CS2" class="game-icon" style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
                   <span class="game-name">Counter-Strike 2</span>
                 </div>
                 <div class="accordion-chevron">
@@ -191,9 +220,17 @@
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                    <div class="sub-server-item"><span>Chennai (Official)</span><span id="pingCsChennai" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Dubai (Official)</span><span id="pingCsDubai" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Frankfurt (EU)</span><span id="pingCsFrankfurt" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>US East (Sterling)</span><span id="pingCsUsEast" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>US West (Seattle)</span><span id="pingCsUsWest" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>EU West (Madrid)</span><span id="pingCsEuWest" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>EU North (Stockholm)</span><span id="pingCsEuNorth" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>EU Central (Frankfurt)</span><span id="pingCsFrankfurt" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>Middle East (Dubai)</span><span id="pingCsDubai" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>Asia (Chennai)</span><span id="pingCsChennai" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>Asia (Hong Kong)</span><span id="pingCsHk" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>Asia (Tokyo)</span><span id="pingCsTokyo" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingCsSydney" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>Africa (Johannesburg)</span><span id="pingCsAfrica" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -202,7 +239,7 @@
             <div class="accordion-item" data-id="lol">
               <div class="game-item accordion-trigger">
                 <div class="game-info">
-                  <span class="game-icon" style="color: #3b82f6;">L</span>
+                  <img src="game_logos/lol.png" alt="LoL" class="game-icon" style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
                   <span class="game-name">League of Legends</span>
                 </div>
                 <div class="accordion-chevron">
@@ -211,14 +248,19 @@
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                    <div class="sub-server-item"><span>Vietnam (Official)</span><span id="pingLolVietnam" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Philippines (SEA)</span><span id="pingLolPh" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Singapore (SEA)</span><span id="pingLolSingapore" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>NA (Chicago)</span><span id="pingLolNa" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>EUW (Amsterdam)</span><span id="pingLolEuw" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>EUNE (Frankfurt)</span><span id="pingLolEune" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>BR (São Paulo)</span><span id="pingLolBr" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>KR (Seoul)</span><span id="pingLolKr" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>JP (Tokyo)</span><span id="pingLolJp" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>SEA (Singapore)</span><span id="pingLolSg" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>TW (Taiwan)</span><span id="pingLolTw" class="game-ping">-- ms</span></div>
+                    <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingLolOce" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
         <!-- COLLAPSIBLE HISTORY SECTION -->
         <div class="history-section accordion-group open" style="margin-top: 0;">
@@ -286,5 +328,73 @@
   </div>
 
   <script type="module" src="./app.js"></script>
+
+<!-- THE UPDATE MODAL (Hidden by default) -->
+  <div id="updateModal" class="update-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.7); backdrop-filter: blur(12px); z-index: 9999; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;">
+    
+    <style>
+      .update-box {
+        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        border: 1px solid rgba(56, 189, 248, 0.15);
+        border-radius: 16px;
+        padding: 32px 28px;
+        width: 320px;
+        text-align: center;
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+        transform: translateY(20px) scale(0.95);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .update-icon-wrapper {
+        background: radial-gradient(circle at center, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+        width: 80px; height: 80px; margin: 0 auto 12px;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .update-icon {
+        background: #0f172a;
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        width: 48px; height: 48px; border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+      }
+      .btn-modern-ghost {
+        flex: 1; padding: 10px 0; border-radius: 8px; font-weight: 600; font-size: 13px;
+        background: rgba(255,255,255,0.03); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.08);
+        cursor: pointer; transition: all 0.2s ease;
+      }
+      .btn-modern-ghost:hover { 
+        background: rgba(255,255,255,0.08); color: #fff; 
+      }
+      .btn-modern-primary {
+        flex: 1; padding: 10px 0; border-radius: 8px; font-weight: 600; font-size: 13px;
+        background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #fff; border: none;
+        cursor: pointer; transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+      }
+      .btn-modern-primary:hover { 
+        transform: translateY(-1px); box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4); filter: brightness(1.1); 
+      }
+    </style>
+
+    <div class="update-box">
+      <div class="update-icon-wrapper">
+        <div class="update-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 16 12 20 8 16"></polyline>
+            <line x1="12" y1="12" x2="12" y2="20"></line>
+            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+          </svg>
+        </div>
+      </div>
+
+      <h2 style="color: #f8fafc; margin: 0 0 8px; font-size: 20px; font-weight: 600; letter-spacing: -0.02em;">Update Available</h2>
+      <p style="color: #94a3b8; font-size: 13px; margin: 0 0 28px; line-height: 1.5;">ExitPing <strong id="newVersionTag" style="color: #e2e8f0; font-weight: 600;">--</strong> is ready to install.<br>You are currently on <span id="currentVersionTag">--</span>.</p>
+      
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button id="skipUpdateBtn" class="btn-modern-ghost">Skip for now</button>
+        <button id="downloadUpdateBtn" class="btn-modern-primary">Update Now</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

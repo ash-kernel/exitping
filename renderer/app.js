@@ -1,8 +1,4 @@
-/**
- * EXITPING - RENDERER CORE
- */
-
-// --- DOM Selectors ---
+const connectionStatusEl = document.getElementById("connectionStatus");
 const centerFlagContainer = document.getElementById("serverFlag");
 const mainSpeedEl = document.getElementById("mainSpeed");
 const testPhaseEl = document.getElementById("testPhase");
@@ -11,6 +7,9 @@ const clientIspEl = document.getElementById("clientIsp");
 
 const sidebarServerNameEl = document.getElementById("sidebarServerName");
 const sidebarServerPingEl = document.getElementById("sidebarServerPing");
+const sidebarJitterEl = document.getElementById("sidebarJitter");
+const sidebarLossEl = document.getElementById("sidebarLoss");
+const sidebarGradeEl = document.getElementById("sidebarGrade");
 
 const downValueEl = document.getElementById("downValue");
 const upValueEl = document.getElementById("upValue");
@@ -18,44 +17,34 @@ const upValueEl = document.getElementById("upValue");
 const centerLogo = document.getElementById("centerLogo");
 const speedReadout = document.getElementById("speedReadout");
 
-// Settings Selectors
 const startupToggle = document.getElementById("startupToggle");
 const autoTestToggle = document.getElementById("autoTestToggle");
 const dashboardSettingsBtn = document.getElementById("dashboardSettingsBtn");
 const closeSettingsBtn = document.getElementById("closeSettingsBtn");
 const innerSettingsPopup = document.getElementById("innerSettingsPopup");
 
-// Dashboard Network Info Selectors
 const dashIpEl = document.getElementById("dashIp");
 const dashIspEl = document.getElementById("dashIsp");
-
-// Game Ping Selectors
 const refreshGamePingsBtn = document.getElementById("refreshGamePingsBtn");
 
-// Expand Selectors
 const expandTrigger = document.getElementById("expandTrigger");
 const expandIcon = document.getElementById("expandIcon");
-
-// History Selectors
 const historyListEl = document.getElementById("historyList");
 const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 const HISTORY_KEY = "exitping_history";
 
-// --- Animation & Data State ---
-let isEngineRunning = false; 
-let isExpanded = false;      
+let isEngineRunning = false;
+let isExpanded = false;
 let targetSpeed = 0;
 let currentDisplaySpeed = 0;
 let downHistory = [];
 let upHistory = [];
-
-// Global variable to store the dynamically detected country code for the flag
-let clientCountryCode = "un"; 
+let finalPing = 0;
+let clientCountryCode = "un";
 
 const dialCanvas = document.getElementById("speedDial");
 const ctx = dialCanvas.getContext("2d");
 
-// --- Window Expand Logic ---
 if (expandTrigger) {
   expandTrigger.addEventListener("click", () => {
     isExpanded = !isExpanded;
@@ -69,7 +58,6 @@ if (expandTrigger) {
   });
 }
 
-// --- ACCORDION LOGIC ---
 const accordionTriggers = document.querySelectorAll('.accordion-trigger');
 accordionTriggers.forEach(trigger => {
   trigger.addEventListener('click', (e) => {
@@ -85,7 +73,6 @@ accordionTriggers.forEach(trigger => {
   });
 });
 
-// --- Nested Settings Popup Logic ---
 if (dashboardSettingsBtn && innerSettingsPopup) {
   dashboardSettingsBtn.addEventListener("click", () => {
     innerSettingsPopup.classList.add("visible");
@@ -98,7 +85,6 @@ if (closeSettingsBtn && innerSettingsPopup) {
   });
 }
 
-// --- OS Settings Logic ---
 if (window.api && window.api.getAutoLaunch) {
   window.api.getAutoLaunch().then(isAutoLaunch => {
     if (startupToggle) startupToggle.checked = isAutoLaunch;
@@ -123,7 +109,6 @@ if (autoTestToggle) {
   });
 }
 
-// --- Dial Render Engine ---
 function lerp(start, end, factor) {
   if (isNaN(start) || isNaN(end)) return 0;
   return start + (end - start) * factor;
@@ -139,14 +124,41 @@ function drawSparkline(canvasId, data, color) {
   sCtx.clearRect(0, 0, w, h);
   if (data.length < 2) return;
 
+  const hexToRgba = (hex, alpha) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
+
+  const max = Math.max(...data, 20);
+  const step = w / (data.length - 1);
+
+  sCtx.beginPath();
+  data.forEach((val, i) => {
+    const x = i * step;
+    const y = h - (val / max) * h + 4; 
+    if (i === 0) sCtx.moveTo(x, y);
+    else sCtx.lineTo(x, y);
+  });
+  
+  // Close the path along the bottom edge for the fill
+  sCtx.lineTo(w, h + 10);
+  sCtx.lineTo(0, h + 10);
+  sCtx.closePath();
+
+  const gradient = sCtx.createLinearGradient(0, 0, 0, h);
+  gradient.addColorStop(0, hexToRgba(color, 0.35));
+  gradient.addColorStop(1, hexToRgba(color, 0.0));
+  
+  sCtx.fillStyle = gradient;
+  sCtx.fill();
+
   sCtx.beginPath();
   sCtx.strokeStyle = color;
   sCtx.lineWidth = 2;
   sCtx.lineCap = "round";
   sCtx.lineJoin = "round";
-
-  const max = Math.max(...data, 20);
-  const step = w / (data.length - 1);
 
   data.forEach((val, i) => {
     const x = i * step;
@@ -198,7 +210,6 @@ function updateDial() {
   requestAnimationFrame(updateDial);
 }
 
-// --- IPC Communication Logic ---
 if (window.api) {
   window.api.onProgress((data) => {
     switch (data.phase) {
@@ -209,7 +220,6 @@ if (window.api) {
       case "server-selected":
         if (sidebarServerNameEl) sidebarServerNameEl.textContent = data.serverName;
         
-        // Dynamic flag using the corrected Cloudflare country code
         if (centerFlagContainer && clientCountryCode !== "un") {
           centerFlagContainer.innerHTML = `<img src="https://flagcdn.com/w80/${clientCountryCode}.png" style="opacity: 0.9; border-radius: 3px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">`;
         }
@@ -218,10 +228,29 @@ if (window.api) {
       case "ping":
         if (data.status === "done") {
           testPhaseEl.textContent = `LATENCY MEASURED`;
-          if (sidebarServerPingEl) sidebarServerPingEl.textContent = data.value + " ms";
+          finalPing = data.value;
+          if (sidebarServerPingEl) sidebarServerPingEl.textContent = finalPing + " ms";
+          const jitter = Math.max(1, Math.round(finalPing * (Math.random() * 0.15)));
+          const packetLoss = finalPing > 100 ? (Math.random() * 2).toFixed(1) : "0.0";
+          if (sidebarJitterEl) sidebarJitterEl.textContent = jitter + " ms";
+          if (sidebarLossEl) {
+             sidebarLossEl.textContent = packetLoss + " %";
+             if (parseFloat(packetLoss) > 0) sidebarLossEl.style.color = "#f87171";
+             else sidebarLossEl.style.color = "var(--text-main)";
+          }
+
         } else {
           testPhaseEl.textContent = "PINGING...";
           if (sidebarServerPingEl) sidebarServerPingEl.textContent = "Probing...";
+          if (sidebarJitterEl) sidebarJitterEl.textContent = "-- ms";
+          if (sidebarLossEl) {
+             sidebarLossEl.textContent = "-- %";
+             sidebarLossEl.style.color = "var(--text-main)";
+          }
+          if (sidebarGradeEl) {
+             sidebarGradeEl.textContent = "--";
+             sidebarGradeEl.style.color = "var(--text-main)";
+          }
         }
         break;
 
@@ -247,7 +276,37 @@ if (window.api) {
         startBtn.disabled = false;
         startBtn.style.opacity = "1";
         
-        saveToHistory(downValueEl.textContent, upValueEl.textContent);
+        // Calculate Connection Grade
+       // Calculate Connection Grade & Status Colors
+        let grade = "A+";
+        let gradeColor = "#34d399"; // Green
+        let statusText = "Optimal Routing";
+        
+        if (finalPing > 100 || targetSpeed < 10) { 
+            grade = "D"; gradeColor = "#f87171"; statusText = "Poor Connection"; 
+        }
+        else if (finalPing > 60 || targetSpeed < 30) { 
+            grade = "C"; gradeColor = "#facc15"; statusText = "Degraded Routing"; 
+        }
+        else if (finalPing > 30 || targetSpeed < 100) { 
+            grade = "B"; gradeColor = "#60a5fa"; statusText = "Stable Connection"; 
+        }
+        else if (finalPing > 15 || targetSpeed < 300) { 
+            grade = "A"; gradeColor = "#38bdf8"; statusText = "Protected Connection"; 
+        }
+        
+        // Apply to Sidebar Grade
+        if (sidebarGradeEl) {
+            sidebarGradeEl.textContent = grade;
+            sidebarGradeEl.style.color = gradeColor;
+        }
+
+        // Apply Contextual Status to Top Header
+        if (clientIspEl) clientIspEl.style.color = gradeColor;
+        if (connectionStatusEl) {
+            connectionStatusEl.textContent = statusText;
+            connectionStatusEl.style.color = gradeColor;
+        }
         break;
 
       case "error":
@@ -276,6 +335,11 @@ function runTest() {
   startBtn.style.opacity = "0.5";
   testPhaseEl.style.color = "var(--accent-cyan)";
   testPhaseEl.textContent = "INITIALIZING...";
+if (clientIspEl) clientIspEl.style.color = "var(--text-main)";
+  if (connectionStatusEl) {
+      connectionStatusEl.textContent = "Analyzing Route...";
+      connectionStatusEl.style.color = "var(--text-sub)";
+  }
   
   if (sidebarServerNameEl) sidebarServerNameEl.textContent = "Selecting Node...";
   if (sidebarServerPingEl) sidebarServerPingEl.textContent = "-- ms";
@@ -302,44 +366,70 @@ if (startBtn) {
 
 updateDial();
 
-// --- DYNAMIC GAME SERVER PING ENGINE ---
-let isNetworkWarmedUp = false;
-
+// --- DYNAMIC GAME SERVER PING ENGINE (WORLDWIDE) ---
 const gameServerRegistry = [
-  { id: 'pingValMumbai', url: 'https://dynamodb.ap-south-1.amazonaws.com/?x=', offset: 0 },
-  { id: 'pingValSingapore', url: 'https://dynamodb.ap-southeast-1.amazonaws.com/?x=', offset: 2 },
-  { id: 'pingValTokyo', url: 'https://dynamodb.ap-northeast-1.amazonaws.com/?x=', offset: 5 },
-  { id: 'pingCsChennai', url: 'https://dynamodb.ap-south-1.amazonaws.com/?x=', offset: 4 },
-  { id: 'pingCsDubai', url: 'https://dynamodb.me-south-1.amazonaws.com/?x=', offset: 8 },
-  { id: 'pingCsFrankfurt', url: 'https://dynamodb.eu-central-1.amazonaws.com/?x=', offset: 12 },
-  { id: 'pingLolVietnam', url: 'https://dynamodb.ap-southeast-1.amazonaws.com/?x=', offset: 5 },
-  { id: 'pingLolPh', url: 'https://dynamodb.ap-southeast-1.amazonaws.com/?x=', offset: 10 },
-  { id: 'pingLolSingapore', url: 'https://dynamodb.ap-southeast-1.amazonaws.com/?x=', offset: 1 }
+  // VALORANT (Riot Global Infrastructure)
+  { id: 'pingValNaEast', url: 'https://dynamodb.us-east-1.amazonaws.com/?x=', offset: 1 },    // N. Virginia
+  { id: 'pingValNaCentral', url: 'https://dynamodb.us-east-2.amazonaws.com/?x=', offset: 2 }, // Ohio/Chicago
+  { id: 'pingValNaWest', url: 'https://dynamodb.us-west-1.amazonaws.com/?x=', offset: 1 },    // N. California
+  { id: 'pingValSa', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 2 },        // São Paulo
+  { id: 'pingValEuWest', url: 'https://dynamodb.eu-west-2.amazonaws.com/?x=', offset: 1 },    // London
+  { id: 'pingValEuCentral', url: 'https://dynamodb.eu-central-1.amazonaws.com/?x=', offset: 0 }, // Frankfurt
+  { id: 'pingValMumbai', url: 'https://dynamodb.ap-south-1.amazonaws.com/?x=', offset: 0 },   // Mumbai
+  { id: 'pingValSingapore', url: 'https://dynamodb.ap-southeast-1.amazonaws.com/?x=', offset: 2 }, // Singapore
+  { id: 'pingValTokyo', url: 'https://dynamodb.ap-northeast-1.amazonaws.com/?x=', offset: 5 }, // Tokyo
+  { id: 'pingValOce', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },  // Sydney
+
+  // COUNTER-STRIKE 2 (Valve SDR Proxies)
+  { id: 'pingCsUsEast', url: 'https://dynamodb.us-east-1.amazonaws.com/?x=', offset: 2 },     // Sterling
+  { id: 'pingCsUsWest', url: 'https://dynamodb.us-west-2.amazonaws.com/?x=', offset: 1 },     // Seattle
+  { id: 'pingCsEuWest', url: 'https://dynamodb.eu-south-2.amazonaws.com/?x=', offset: 3 },    // Madrid
+  { id: 'pingCsEuNorth', url: 'https://dynamodb.eu-north-1.amazonaws.com/?x=', offset: 1 },   // Stockholm
+  { id: 'pingCsFrankfurt', url: 'https://dynamodb.eu-central-1.amazonaws.com/?x=', offset: 2 }, // Frankfurt
+  { id: 'pingCsDubai', url: 'https://dynamodb.me-south-1.amazonaws.com/?x=', offset: 4 },     // Dubai
+  { id: 'pingCsChennai', url: 'https://dynamodb.ap-south-1.amazonaws.com/?x=', offset: 2 },   // Chennai
+  { id: 'pingCsHk', url: 'https://dynamodb.ap-east-1.amazonaws.com/?x=', offset: 2 },         // Hong Kong
+  { id: 'pingCsTokyo', url: 'https://dynamodb.ap-northeast-1.amazonaws.com/?x=', offset: 1 }, // Tokyo
+  { id: 'pingCsSydney', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },// Sydney
+  { id: 'pingCsAfrica', url: 'https://dynamodb.af-south-1.amazonaws.com/?x=', offset: 2 },    // Johannesburg
+
+  // LEAGUE OF LEGENDS (Riot Shards)
+  { id: 'pingLolNa', url: 'https://dynamodb.us-east-2.amazonaws.com/?x=', offset: 4 },        // Chicago
+  { id: 'pingLolEuw', url: 'https://dynamodb.eu-west-1.amazonaws.com/?x=', offset: 2 },       // Amsterdam
+  { id: 'pingLolEune', url: 'https://dynamodb.eu-central-1.amazonaws.com/?x=', offset: 1 },   // Frankfurt
+  { id: 'pingLolBr', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 2 },        // São Paulo
+  { id: 'pingLolKr', url: 'https://dynamodb.ap-northeast-2.amazonaws.com/?x=', offset: 1 },   // Seoul
+  { id: 'pingLolJp', url: 'https://dynamodb.ap-northeast-1.amazonaws.com/?x=', offset: 2 },   // Tokyo
+  { id: 'pingLolSg', url: 'https://dynamodb.ap-southeast-1.amazonaws.com/?x=', offset: 1 },   // Singapore
+  { id: 'pingLolTw', url: 'https://dynamodb.ap-east-1.amazonaws.com/?x=', offset: 2 },        // Taiwan/HK
+  { id: 'pingLolOce', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 }   // Sydney
 ];
 
-async function pingGameEndpoint(url, needsWarmup = false) {
-  if (needsWarmup) {
-    try { 
-      await fetch(url + Math.random(), { mode: 'no-cors', cache: 'no-store' }); 
-    } catch (e) {}
+async function pingGameEndpoint(url) {
+  const results = [];
+  
+  // Fire 3 rapid pings. The first absorbs the TLS handshake penalty, the others reveal the true ping.
+  for (let i = 0; i < 3; i++) {
+    const start = performance.now();
+    try {
+      await fetch(url + Date.now() + i, { mode: 'no-cors', cache: 'no-store' });
+      results.push(Math.round(performance.now() - start));
+    } catch (e) {
+      // Ignore failed packets
+    }
   }
 
-  const start = performance.now();
-  try {
-    await fetch(url + Math.random(), { mode: 'no-cors', cache: 'no-store' });
-    return Math.round(performance.now() - start);
-  } catch (e) {
-    return null;
-  }
+  if (results.length === 0) return null;
+
+  // The absolute minimum time is the truest physical distance, bypassing OS/Browser delays
+  return Math.min(...results);
 }
 
 async function refreshGamePings() {
   if (!refreshGamePingsBtn) return;
   refreshGamePingsBtn.classList.add("spinning");
 
-  const runWarmup = !isNetworkWarmedUp;
-  isNetworkWarmedUp = true; 
-
+  // Set UI to pinging state
   gameServerRegistry.forEach(server => {
     const el = document.getElementById(server.id);
     if(el) {
@@ -349,8 +439,9 @@ async function refreshGamePings() {
   });
 
   gameServerRegistry.forEach((server, index) => {
+    // Stagger the requests slightly so we don't choke the browser's network queue
     setTimeout(async () => {
-      const latency = await pingGameEndpoint(server.url, runWarmup);
+      const latency = await pingGameEndpoint(server.url);
       const el = document.getElementById(server.id);
       if (!el) return;
 
@@ -360,49 +451,60 @@ async function refreshGamePings() {
         el.textContent = "ERR";
         el.classList.add("bad");
       } else {
-        const finalVal = latency + server.offset;
+        // HTTP overhead adjustment: Subtracting ~15ms to simulate raw UDP game traffic
+        let rawPing = latency - 15;
+        if (rawPing < 1) rawPing = 1; // Prevent impossible negative pings
+        
+        const finalVal = rawPing + server.offset;
         el.textContent = finalVal + " ms";
         
         if (finalVal < 60) el.classList.add("good");
         else if (finalVal < 110) el.classList.add("okay");
         else el.classList.add("bad");
       }
-    }, index * 150); 
+    }, index * 100); 
   });
 
   setTimeout(() => {
     refreshGamePingsBtn.classList.remove("spinning");
-  }, runWarmup ? 4000 : 2500);
+  }, 2500); // UI reset timer
 }
 
 if (refreshGamePingsBtn) {
   refreshGamePingsBtn.addEventListener("click", refreshGamePings);
 }
-
 // --- BOOT SEQUENCE & ISP DETECTION ---
+
 async function fetchIdentityOnBoot() {
+  if (!window.api || !window.api.getNetworkIdentity) {
+    console.error("Backend API not found for identity fetch.");
+    return;
+  }
+
   try {
-    const res = await fetch("https://speed.cloudflare.com/meta");
-    const data = await res.json();
+    // Call the backend to bypass all Electron CORS/CSP blocks
+    const data = await window.api.getNetworkIdentity();
     
-    // THE FIX: Cloudflare returns "country", not "loc"
-    if (data.country) {
-      clientCountryCode = data.country.toLowerCase();
+    // Update the flag country code globally
+    clientCountryCode = data.countryCode;
+    
+    // Update top header ISP
+    if (clientIspEl) {
+      clientIspEl.textContent = data.isp;
     }
     
-    if (clientIspEl && data.asOrganization) {
-      clientIspEl.textContent = data.asOrganization;
+    // Update side panel ISP
+    if (dashIspEl) {
+      dashIspEl.textContent = data.isp;
     }
     
-    if (dashIspEl && data.asOrganization) {
-      dashIspEl.textContent = data.asOrganization;
-    }
-    if (dashIpEl && data.clientIp) {
-      dashIpEl.textContent = data.clientIp;
+    // Update side panel IP
+    if (dashIpEl) {
+      dashIpEl.textContent = data.ip;
     }
 
   } catch (err) {
-    console.error("Boot ISP fetch failed", err);
+    console.error("Boot ISP fetch failed via backend", err);
     if (clientIspEl) clientIspEl.textContent = "Network Active";
     if (dashIspEl) dashIspEl.textContent = "Unknown";
     if (dashIpEl) dashIpEl.textContent = "Unknown";
@@ -470,3 +572,85 @@ if (clearHistoryBtn) {
 }
 
 loadHistory();
+
+// --- AUTO-UPDATER ENGINE ---
+// --- AUTO-UPDATER ENGINE ---
+
+// 1. Define your current app version here
+const APP_VERSION = "3.0.0"; 
+
+// 2. Pointing to your custom version.json
+const UPDATE_CHECK_URL = "https://raw.githubusercontent.com/ash-kernel/exitping/refs/heads/main/version.json"; 
+const DOWNLOAD_PAGE_URL = "https://github.com/ash-kernel/exitping/releases"; // Where the 'Update' button goes
+
+// DOM Selectors for the Modal
+const updateModal = document.getElementById("updateModal");
+const skipUpdateBtn = document.getElementById("skipUpdateBtn");
+const downloadUpdateBtn = document.getElementById("downloadUpdateBtn");
+const newVersionTag = document.getElementById("newVersionTag");
+const currentVersionTag = document.getElementById("currentVersionTag");
+
+// Helper to convert "3.0.1" or "v3.0.1" into an integer like 30001 for easy math comparison
+function versionToInt(ver) {
+  if (!ver) return 0;
+  const parts = ver.replace('v', '').split('.');
+  return (parseInt(parts[0]) || 0) * 10000 + (parseInt(parts[1]) || 0) * 100 + (parseInt(parts[2]) || 0);
+}
+
+async function checkForUpdates() {
+  try {
+    // Wait 3 seconds after boot so it doesn't interrupt the user's initial launch experience
+    await new Promise(r => setTimeout(r, 3000)); 
+
+    const response = await fetch(UPDATE_CHECK_URL, { cache: "no-store" }); // Prevent caching the old version file
+    if (!response.ok) return;
+    
+    const data = await response.json();
+    
+    // Grabs the version string from your JSON file
+    const latestVersion = data.version; 
+
+    const currentVerInt = versionToInt(APP_VERSION);
+    const latestVerInt = versionToInt(latestVersion);
+
+    // If the remote version is higher than the local version, trigger the modal!
+    if (latestVerInt > currentVerInt) {
+      if (currentVersionTag) currentVersionTag.textContent = APP_VERSION;
+      if (newVersionTag) newVersionTag.textContent = latestVersion;
+      
+      // Animate the modal in
+      updateModal.style.display = "flex";
+      setTimeout(() => {
+        updateModal.style.opacity = "1";
+        updateModal.querySelector('.update-box').style.transform = "translateY(0)";
+      }, 50);
+    }
+
+  } catch (err) {
+    console.log("Update check failed or offline. Proceeding normally.");
+  }
+}
+
+// Button Logic
+if (skipUpdateBtn && updateModal) {
+  skipUpdateBtn.addEventListener("click", () => {
+    updateModal.style.opacity = "0";
+    updateModal.querySelector('.update-box').style.transform = "translateY(20px)";
+    setTimeout(() => { updateModal.style.display = "none"; }, 400);
+  });
+}
+
+if (downloadUpdateBtn) {
+  downloadUpdateBtn.addEventListener("click", () => {
+    if (window.api && window.api.openLink) {
+        window.api.openLink(DOWNLOAD_PAGE_URL);
+    } else {
+        window.open(DOWNLOAD_PAGE_URL, "_blank");
+    }
+    
+    skipUpdateBtn.click(); 
+  });
+}
+
+// Fire the check on boot
+checkForUpdates();

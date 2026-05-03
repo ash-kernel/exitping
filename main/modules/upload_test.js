@@ -3,55 +3,72 @@ const http = require("http");
 const { performance } = require("perf_hooks");
 
 /**
- * ENTERPRISE UPLOAD ENGINE
- * Dynamically parses Ookla upload endpoints.
- * Features: 256KB Static Buffer, Sustained Peak Tracking, and Cache-Busting.
+ * Upload speed test with multi-threaded requests
  */
-
-// Memory Optimization: 256KB static buffer prevents CPU bottlenecks
-const dummyChunk = Buffer.alloc(262144, '0'); 
+const dummyChunk = Buffer.alloc(262144, '0');
 
 function uploadTest(server, progressCallback, duration = 8000) {
   return new Promise((resolve) => {
-    const activeThreads = 8; 
-    let totalBytesUploaded = 0;
+    const activeThreads = 8;
     const startTime = performance.now();
     let isFinished = false;
     
-    // SUSTAINED PEAK TRACKING
-    let warmedUp = false;
-    let bytesAtWarmup = 0;
-    let timeAtWarmup = 0;
+    const activeSockets = new Set();
+    let smoothedSpeed = 0;
+    const smoothingFactor = 0.08;
+    let lastBytes = 0;
+    let lastTime = 0;
+    let tickBuffer = []; 
 
-    // The Ookla API gives us a full URL in server.uploadUrl
     const urlObj = new URL(server.uploadUrl);
     const protocol = urlObj.protocol === 'https:' ? https : http;
     
+    const getTotalBytesWritten = () => {
+      let total = 0;
+      for (const socket of activeSockets) {
+        total += socket.bytesWritten || 0;
+      }
+      return total;
+    };
+
     const reportInterval = setInterval(() => {
       const elapsed = (performance.now() - startTime) / 1000;
+      const actualBytesUploaded = getTotalBytesWritten();
+      if (elapsed < 1.5) {
+        lastBytes = actualBytesUploaded;
+        lastTime = elapsed;
+        return;
+      }
       
-      // 1.5s Warm-up: Wait for TCP Slow-Start to finish before measuring
-      if (elapsed > 1.5 && !warmedUp) {
-        warmedUp = true;
-        bytesAtWarmup = totalBytesUploaded;
-        timeAtWarmup = elapsed;
+      const intervalBytes = actualBytesUploaded - lastBytes;
+      const intervalTime = elapsed - lastTime;
+      
+      if (intervalTime > 0) {
+        const instantSpeed = (intervalBytes * 8) / (intervalTime * 1000000);
+        tickBuffer.push(instantSpeed);
+        if (tickBuffer.length > 5) tickBuffer.shift();
+        
+        if (tickBuffer.length >= 3) {
+          const sorted = [...tickBuffer].sort((a, b) => a - b);
+          const stableSpeed = sorted[Math.floor(sorted.length / 2)]; 
+          
+          if (smoothedSpeed === 0) {
+            smoothedSpeed = stableSpeed * 0.75;
+          } else {
+            smoothedSpeed = smoothedSpeed * (1 - smoothingFactor) + stableSpeed * smoothingFactor;
+          }
+          
+          progressCallback(smoothedSpeed);
+        }
       }
 
-      if (warmedUp) {
-        const sustainedBytes = totalBytesUploaded - bytesAtWarmup;
-        const sustainedTime = elapsed - timeAtWarmup;
-        const speedMbps = (sustainedBytes * 8) / (sustainedTime * 1000000);
-        progressCallback(speedMbps);
-      } else {
-        const rawSpeed = (totalBytesUploaded * 8) / (elapsed * 1000000);
-        progressCallback(rawSpeed * 0.5); // Dampen early chaotic spikes
-      }
-    }, 100);
+      lastBytes = actualBytesUploaded;
+      lastTime = elapsed;
+    }, 150);
 
     const startThread = (id) => {
       if (isFinished) return;
 
-      // Ensure every stream bypasses ISP caching
       const separator = urlObj.search ? '&' : '?';
       const pathWithCacheBuster = `${urlObj.pathname}${urlObj.search}${separator}nocache=${Date.now()}_${id}`;
       
@@ -64,7 +81,7 @@ function uploadTest(server, progressCallback, duration = 8000) {
           'Content-Type': 'application/octet-stream', 
           'Connection': 'keep-alive',
           'User-Agent': 'ExitPing-Pro/3.0',
-          'Content-Length': 100000000000 // Faking 100GB forces the server's high-speed intake
+          'Content-Length': 100000000000 
         }
       };
 
@@ -78,18 +95,18 @@ function uploadTest(server, progressCallback, duration = 8000) {
       req.on('socket', (socket) => {
         socket.setNoDelay(true);
         socket.setKeepAlive(true, 1000);
+        activeSockets.add(socket);
+        socket.on('close', () => activeSockets.delete(socket));
       });
 
       const pushData = () => {
         while (!isFinished) {
           const canContinue = req.write(dummyChunk);
-          totalBytesUploaded += dummyChunk.length;
           if (!canContinue) break; 
         }
       };
 
       req.on('drain', pushData);
-      
       req.on('error', () => {
         if (!isFinished) setTimeout(() => startThread(id), 250);
       });
@@ -97,22 +114,22 @@ function uploadTest(server, progressCallback, duration = 8000) {
       pushData();
     };
 
-    // Launch saturation attack
     for (let i = 0; i < activeThreads; i++) {
       startThread(i);
     }
 
-    // Hard Stop
     setTimeout(() => {
       isFinished = true;
       clearInterval(reportInterval);
       
       const finalElapsed = (performance.now() - startTime) / 1000;
+      const finalBytesUploaded = getTotalBytesWritten();
+      const finalSpeed = (finalBytesUploaded * 8) / (finalElapsed * 1000000);
       
-      const finalSpeed = warmedUp 
-        ? ((totalBytesUploaded - bytesAtWarmup) * 8) / ((finalElapsed - timeAtWarmup) * 1000000)
-        : (totalBytesUploaded * 8) / (finalElapsed * 1000000);
-      
+      for (const socket of activeSockets) {
+        socket.destroy();
+      }
+
       resolve(finalSpeed > 0 ? finalSpeed : 0);
     }, duration);
   });

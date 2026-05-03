@@ -11,15 +11,15 @@ ExitPing is a lightweight desktop application that provides real-time, highly ac
 ## ✨ Features
 
 - **Dynamic Node Discovery** — Automatically queries live, global enterprise nodes based on your exact location (No static lists).
-- **Pure TCP Latency** — Bypasses HTTP protocol bloat using raw socket handshakes for 100% accurate, physical-layer ping times.
-- **Gigabit-Ready Streams** — Utilizes raw data encoding and aggressive cache-busting to max out fiber connections without CPU bottlenecks.
-- **Game Server Telemetry** — Live, accordion-style latency monitoring for official *Valorant*, *CS2*, and *League of Legends* regional servers.
-- **Pro Network Inspector** — A clean, slide-out dashboard for deep network insights (Active Node, IP, ISP), keeping the main widget completely minimal.
-- **Smart Identity Detection** — Cloudflare-powered telemetry for instant, highly accurate ISP detection and regional flagging.
+- **Anti-Spike Tick Math** — Replaces outdated cumulative averages with instantaneous median-filtered tick math, guaranteeing flawless accuracy even when the OS buffers data.
+- **Pro Network Dashboard** — A clean, slide-out inspector revealing deep network insights including Jitter, Packet Loss, Connection Grade, IP, and ISP.
+- **Worldwide Game Telemetry** — Live, accordion-style latency monitoring for official *Valorant*, *CS2*, and *League of Legends* data centers across the globe.
+- **Contextual Status Routing** — The UI dynamically reacts to your network health, assigning a real-time grade and status (e.g., "Stable Connection" or "Degraded Routing").
+- **Silent Auto-Updater** — Never miss a patch. ExitPing checks for updates seamlessly in the background and presents a sleek, glassmorphism modal when a new version is ready.
 
 ## Preview
 
-<img src="assets/readme/preview.png" width=260>
+<img src="assets/readme/preview.png" width=500>
 
 ## Installation
 
@@ -65,9 +65,12 @@ Access the settings panel from the Network Inspector to customize:
 
 | Metric | Description |
 |--------|-------------|
-| **Download** | Speed at which data is received, tested via 8 parallel streams (Mbps). |
-| **Upload** | Speed at which data is sent, utilizing a static memory buffer (Mbps). |
+| **Download** | Speed at which data is received, tested via 8 parallel streams and instant tick-math (Mbps). |
+| **Upload** | Speed at which data is sent, utilizing a static memory buffer and median anti-spike filtering (Mbps). |
 | **Latency (Ping)** | True physical-layer response time to the test server (ms). |
+| **Jitter** | The variance in latency, crucial for stable competitive gaming and VoIP calls. |
+| **Loss** | Packet loss percentage based on extreme ping variance. |
+| **Grade** | An algorithmic score (A+ to D) rating the overall health of your routing. |
 | **Active Node** | The specific enterprise server currently routing your test. |
 | **Game Ping** | Direct routing time to official competitive gaming clusters. |
 

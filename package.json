@@ -1,6 +1,6 @@
 {
   "name": "exitping",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "main": "main/main.js", 
   "description": "Network speed tester",
   "scripts": {

@@ -5,7 +5,7 @@ const { performance } = require("perf_hooks");
 /**
  * Download speed test with multi-threaded requests
  */
-function downloadTest(server, progressCallback, duration = 8000) {
+function downloadTest(server, testContext, progressCallback, duration = 8000) {
   return new Promise((resolve) => {
     const activeThreads = 8; 
     let totalBytes = 0;
@@ -69,6 +69,9 @@ function downloadTest(server, progressCallback, duration = 8000) {
         },
         timeout: 5000
       };
+      if (testContext && testContext.localAddress) {
+        options.localAddress = testContext.localAddress;
+      }
       
       const req = protocol.get(url, options, (res) => {
         if (res.socket) res.socket.setNoDelay(true);
@@ -82,8 +85,14 @@ function downloadTest(server, progressCallback, duration = 8000) {
         });
       });
       
-      req.on("error", () => {
-        if (!isFinished) setTimeout(() => startThread(id), 200);
+      req.on("error", (err) => {
+        if (!isFinished) {
+          if (err && (err.code === 'EADDRNOTAVAIL' || err.code === 'EADDRINUSE')) {
+            if (testContext) testContext.localAddress = null;
+            delete options.localAddress;
+          }
+          setTimeout(() => startThread(id), 200);
+        }
       });
       
       threadPool[id] = req;

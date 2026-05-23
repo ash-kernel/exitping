@@ -7,7 +7,7 @@ const { performance } = require("perf_hooks");
  */
 const dummyChunk = Buffer.alloc(262144, '0');
 
-function uploadTest(server, progressCallback, duration = 8000) {
+function uploadTest(server, testContext, progressCallback, duration = 8000) {
   return new Promise((resolve) => {
     const activeThreads = 8;
     const startTime = performance.now();
@@ -64,7 +64,7 @@ function uploadTest(server, progressCallback, duration = 8000) {
 
       lastBytes = actualBytesUploaded;
       lastTime = elapsed;
-    }, 150);
+    }, 67);
 
     const startThread = (id) => {
       if (isFinished) return;
@@ -84,6 +84,9 @@ function uploadTest(server, progressCallback, duration = 8000) {
           'Content-Length': 100000000000 
         }
       };
+      if (testContext && testContext.localAddress) {
+        options.localAddress = testContext.localAddress;
+      }
 
       const req = protocol.request(options, (res) => {
         res.on('data', () => {}); 
@@ -107,8 +110,14 @@ function uploadTest(server, progressCallback, duration = 8000) {
       };
 
       req.on('drain', pushData);
-      req.on('error', () => {
-        if (!isFinished) setTimeout(() => startThread(id), 250);
+      req.on('error', (err) => {
+        if (!isFinished) {
+          if (err && (err.code === 'EADDRNOTAVAIL' || err.code === 'EADDRINUSE')) {
+            if (testContext) testContext.localAddress = null;
+            delete options.localAddress;
+          }
+          setTimeout(() => startThread(id), 250);
+        }
       });
 
       pushData();

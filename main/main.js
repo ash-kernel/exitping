@@ -1,16 +1,36 @@
-const { app, BrowserWindow, Tray, Menu, ipcMain, screen, nativeImage } = require("electron");
+const { app, BrowserWindow, Tray, Menu, ipcMain, screen, nativeImage, Notification, shell } = require("electron");
 const path = require("path");
+const https = require("https");
 const { runSpeedTest } = require("./core/speedtest_engine");
+const fs = require("fs");
+const os = require("os");
+const { spawn } = require("child_process");
+const net = require("net");
 
 let win = null;
 let tray = null;
 let isQuitting = false;
+let isExpandedState = false;
+
+const SIZES = {
+  small: { baseWidth: 340, baseHeight: 600, expandedWidth: 680 },
+  medium: { baseWidth: 380, baseHeight: 680, expandedWidth: 760 },
+  large: { baseWidth: 420, baseHeight: 750, expandedWidth: 840 }
+};
+
+// Disable Chromium HTTP disk cache in development to prevent index corruption/blockfile critical errors
+if (!app.isPackaged) {
+  app.commandLine.appendSwitch('disable-http-cache');
+}
 
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
   app.quit();
   process.exit(0);
 }
+
+// Required for Windows Action Center notifications to show up
+app.setAppUserModelId("com.ashkernel.exitping");
 
 function positionWindow() {
   if (!win) return;
@@ -28,11 +48,17 @@ function positionWindow() {
 }
 
 function createWindow() {
+  const config = getConfig();
+  const appSizeKey = config.appSize || "medium";
+  const size = SIZES[appSizeKey] || SIZES.medium;
+  const initialWidth = size.baseWidth;
+  const initialHeight = size.baseHeight;
+
   win = new BrowserWindow({
-    width: 380, 
-    height: 600,
-    minWidth: 380,
-    minHeight: 600,
+    width: initialWidth, 
+    height: initialHeight,
+    minWidth: initialWidth,
+    minHeight: initialHeight,
     frame: false,
     resizable: false,
     alwaysOnTop: true, 
@@ -98,7 +124,6 @@ function createTray() {
             positionWindow();
             win.show();
             win.focus();
-            // This safely triggers the renderer's test function, respecting the UI lock!
             win.webContents.executeJavaScript('if (typeof runTest === "function") runTest();');
           }
         }
@@ -139,6 +164,50 @@ function createTray() {
   }
 }
 
+// --- SILENT BOOT HEALTH CHECK ---
+function performSilentHealthCheck() {
+  const start = Date.now();
+  
+  // Fire a lightweight HEAD request to Cloudflare's edge
+  const req = https.request({
+    method: 'HEAD',
+    hostname: 'cloudflare.com',
+    path: '/',
+    timeout: 3000
+  }, (res) => {
+    const latency = Date.now() - start;
+    if (Notification.isSupported()) {
+      let title = 'ExitPing Status';
+      let message = `Network Stable: ${latency}ms`;
+      
+      if (latency > 100) {
+        message = `Network Degraded: ${latency}ms`;
+      }
+
+      new Notification({
+        title: title,
+        body: message,
+        icon: path.join(__dirname, "../assets/icons/tray.png"),
+        silent: true // Prevents an annoying chime sound on boot
+      }).show();
+    }
+  });
+
+  req.on('error', () => {
+    if (Notification.isSupported()) {
+      new Notification({
+        title: 'ExitPing Status',
+        body: 'Network Offline',
+        icon: path.join(__dirname, "../assets/icons/tray.png"),
+        silent: true
+      }).show();
+    }
+  });
+
+  req.on('timeout', () => req.destroy());
+  req.end();
+}
+
 app.on("second-instance", () => {
   if (win) {
     positionWindow();
@@ -150,11 +219,17 @@ app.on("second-instance", () => {
 app.whenReady().then(() => {
   createWindow();
   createTray();
+
+  // Check if launched at startup AND if the user wants the notification
+  if (process.argv.includes('--hidden')) {
+    const config = getConfig();
+    if (config.silentCheck) {
+      performSilentHealthCheck();
+    }
+  }
 });
 
 // --- BACKEND IPC: NETWORK IDENTITY (CORS BYPASS) ---
-const https = require("https");
-
 ipcMain.handle("get-network-identity", async () => {
   return new Promise((resolve) => {
     const req = https.get('https://ipwho.is/', { timeout: 2000 }, (res) => {
@@ -163,44 +238,179 @@ ipcMain.handle("get-network-identity", async () => {
       res.on("end", () => {
         try {
           const json = JSON.parse(body);
+          const isVpn = !!(json.security?.proxy || json.security?.vpn || json.security?.anonymous);
           resolve({ 
             ip: json.ip || "0.0.0.0", 
             isp: json.connection?.isp || json.connection?.org || "Network Active", 
-            countryCode: json.country_code ? json.country_code.toLowerCase() : "un"
+            countryCode: json.country_code ? json.country_code.toLowerCase() : "un",
+            isVpn: isVpn
           });
         } catch (e) { 
-          resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un" }); 
+          resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un", isVpn: false }); 
         }
       });
     });
     
-    req.on("error", () => resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un" }));
+    req.on("error", () => resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un", isVpn: false }));
     req.on("timeout", () => { 
       req.destroy(); 
-      resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un" }); 
+      resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un", isVpn: false }); 
     });
   });
 });
 
-// --- BACKEND IPC: WINDOW CONTROLS (NEW) ---
+// --- BACKEND IPC: WINDOW CONTROLS ---
 ipcMain.on("toggle-expand", (event, isExpanded) => {
+  isExpandedState = isExpanded;
   if (!win) return;
-  const targetWidth = isExpanded ? 760 : 380; // Expand to double width, or collapse to original
+  
+  const config = getConfig();
+  const appSizeKey = config.appSize || "medium";
+  const size = SIZES[appSizeKey] || SIZES.medium;
+  const targetWidth = isExpanded ? size.expandedWidth : size.baseWidth; 
   const bounds = win.getBounds();
 
-  // Set the new size, shifting X so it stays anchored to the right side of the screen
+  win.setMinimumSize(size.baseWidth, size.baseHeight);
   win.setBounds({
     x: bounds.x - (targetWidth - bounds.width), 
     y: bounds.y, 
     width: targetWidth,
     height: bounds.height
-  }, true); // The 'true' enables a smooth resize animation where supported
+  }, true); 
 });
 
+ipcMain.handle("get-app-size", () => {
+  return getConfig().appSize || "medium";
+});
+
+ipcMain.on("set-app-size", (event, newSizeKey) => {
+  const config = getConfig();
+  config.appSize = newSizeKey;
+  saveConfig(config);
+
+  if (win) {
+    const size = SIZES[newSizeKey] || SIZES.medium;
+    const targetWidth = isExpandedState ? size.expandedWidth : size.baseWidth;
+    const targetHeight = size.baseHeight;
+
+    win.setMinimumSize(size.baseWidth, size.baseHeight);
+    
+    const display = screen.getPrimaryDisplay();
+    const workArea = display.workArea;
+    const x = workArea.x + workArea.width - targetWidth - 12;
+    const y = workArea.y + workArea.height - targetHeight - 12;
+
+    win.setBounds({
+      x: x < workArea.x ? workArea.x : x,
+      y: y < workArea.y ? workArea.y : y,
+      width: targetWidth,
+      height: targetHeight
+    }, true);
+    
+    win.webContents.send("app-size-changed", newSizeKey);
+  }
+});
+
+ipcMain.on("open-external", (event, url) => {
+  shell.openExternal(url);
+});
+
+// --- BACKEND IPC: SYSTEM INFO & TOOLS ---
+ipcMain.handle("get-network-interfaces", () => {
+  const interfaces = os.networkInterfaces();
+  const results = [];
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        results.push({ name, ip: iface.address });
+      }
+    }
+  }
+  return results;
+});
+
+ipcMain.handle("geolocate-ip", async (event, ip) => {
+  return new Promise((resolve) => {
+    const req = https.get(`https://ipwho.is/${ip}`, { timeout: 2500 }, (res) => {
+      let body = "";
+      res.on("data", (chunk) => (body += chunk));
+      res.on("end", () => {
+        try {
+          resolve(JSON.parse(body));
+        } catch (e) {
+          resolve({ success: false });
+        }
+      });
+    });
+    
+    req.on("error", () => resolve({ success: false }));
+    req.on("timeout", () => {
+      req.destroy();
+      resolve({ success: false });
+    });
+  });
+});
+
+ipcMain.handle("ping-host", async (event, hostname, port = 443) => {
+  return new Promise((resolve) => {
+    const start = performance.now();
+    const socket = new net.Socket();
+    
+    socket.setTimeout(1200);
+    
+    socket.connect(port, hostname, () => {
+      const latency = Math.round(performance.now() - start);
+      socket.destroy();
+      resolve(latency);
+    });
+    
+    socket.on("error", () => {
+      socket.destroy();
+      resolve(null);
+    });
+    
+    socket.on("timeout", () => {
+      socket.destroy();
+      resolve(null);
+    });
+  });
+});
+
+let activeTraceroute = null;
+ipcMain.on("start-traceroute", (event, targetHost) => {
+  if (activeTraceroute) {
+    activeTraceroute.kill();
+  }
+
+  // Use tracert on Windows. -d avoids resolving IPs to hostnames for faster results.
+  // -w 1000 sets timeout to 1 second per hop.
+  activeTraceroute = spawn("tracert", ["-d", "-w", "1000", targetHost]);
+
+  activeTraceroute.stdout.on("data", (data) => {
+    if (win && !win.isDestroyed()) {
+      win.webContents.send("traceroute-data", data.toString());
+    }
+  });
+
+  activeTraceroute.stderr.on("data", (data) => {
+    if (win && !win.isDestroyed()) {
+      win.webContents.send("traceroute-data", `ERROR: ${data.toString()}\n`);
+    }
+  });
+
+  activeTraceroute.on("close", (code) => {
+    if (win && !win.isDestroyed()) {
+      win.webContents.send("traceroute-data", `\nTraceroute complete (code ${code}).\n`);
+    }
+    activeTraceroute = null;
+  });
+});
+
+
 // --- BACKEND IPC: SPEEDTEST ---
-ipcMain.on("start-speedtest", async (event) => {
+ipcMain.on("start-speedtest", async (event, localAddress) => {
   try {
-    const finalResult = await runSpeedTest((progressData) => {
+    const finalResult = await runSpeedTest(localAddress, (progressData) => {
       if (win && !win.isDestroyed()) {
         win.webContents.send("speedtest-progress", progressData);
       }
@@ -227,6 +437,45 @@ ipcMain.on("set-autolaunch", (event, enable) => {
     openAtLogin: enable,
     args: ["--hidden"] 
   });
+});
+
+ipcMain.on("show-notification", (event, title, body) => {
+  if (Notification.isSupported()) {
+    new Notification({
+      title,
+      body,
+      icon: path.join(__dirname, "../assets/icons/tray.png"),
+      silent: true
+    }).show();
+  }
+});
+
+// --- BACKEND IPC: CONFIG SAVING ---
+const configPath = path.join(app.getPath("userData"), "exitping_config.json");
+
+function getConfig() {
+  try {
+    if (fs.existsSync(configPath)) {
+      return JSON.parse(fs.readFileSync(configPath, "utf8"));
+    }
+  } catch (e) {}
+  return { silentCheck: true }; // Default to ON
+}
+
+function saveConfig(config) {
+  try {
+    fs.writeFileSync(configPath, JSON.stringify(config));
+  } catch (e) {}
+}
+
+ipcMain.handle("get-silent-check", () => {
+  return getConfig().silentCheck;
+});
+
+ipcMain.on("set-silent-check", (event, enable) => {
+  const config = getConfig();
+  config.silentCheck = enable;
+  saveConfig(config);
 });
 
 app.on("activate", () => {

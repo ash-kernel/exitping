@@ -1,7 +1,7 @@
 {
   "name": "exitping",
-  "version": "3.0.1",
-  "main": "main/main.js", 
+  "version": "4.0.0",
+  "main": "main/main.js",
   "description": "Network speed tester",
   "scripts": {
     "dev": "vite",
@@ -19,19 +19,33 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "assets/icons/logo.ico"
     },
     "nsis": {
       "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true
+      "installerIcon": "assets/icons/logo.ico",
+      "uninstallerIcon": "assets/icons/logo.ico",
+      "installerHeaderIcon": "assets/icons/logo.ico",
+      "installerHeader": "assets/installer/exitping_150x57.bmp",
+      "installerSidebar": "assets/installer/exitping_164x314.bmp",
+      "include": "assets/installer/installer.nsh",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ExitPing"
     },
     "files": [
       "dist/**/*",

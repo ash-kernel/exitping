@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' 'unsafe-inline' https: http: localhost:5173; script-src 'self' 'unsafe-inline' 'unsafe-eval' localhost:5173; connect-src 'self' https: http: ws: wss: localhost:5173; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:;">
   <title>ExitPing</title>
   <link rel="stylesheet" href="./styles/style.css">
 </head>
+
 <body>
-  
+
   <div id="layoutWrapper" class="layout-wrapper">
-    
+
     <!-- LEFT SIDE: The Main App -->
     <div class="app-wrapper">
-      
+
       <div class="ambient-glow"></div>
-      
-    <header class="top-bar">
+
+      <header class="top-bar">
         <!-- Original Drag Handle (6 dots) -->
         <div class="drag-handle">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="9" cy="5" r="1.5"></circle>
             <circle cx="9" cy="12" r="1.5"></circle>
             <circle cx="9" cy="19" r="1.5"></circle>
@@ -31,14 +36,29 @@
         <div class="header-pill">
           <div class="header-text left-align">
             <span id="clientIsp" class="text-main" style="transition: color 0.4s ease;">Detecting ISP...</span>
-            <span id="connectionStatus" class="text-sub" style="color: var(--accent-cyan); transition: color 0.4s ease;">Protected Connection</span>
+            <span id="connectionStatus" class="text-sub"
+              style="color: var(--accent-cyan); transition: color 0.4s ease; display: flex; align-items: center; gap: 4px;">
+              Protected Connection
+              <svg id="vpnBadgeTop" xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                style="display: none; color: var(--accent-cyan); filter: drop-shadow(0 0 3px var(--accent-cyan));">
+                <circle cx="7.5" cy="15.5" r="5.5"></circle>
+                <path d="m21 2-9.6 9.6"></path>
+                <path d="m15.5 7.5 3 3"></path>
+                <path d="M18.5 4.5 22 8"></path>
+              </svg>
+            </span>
           </div>
         </div>
 
         <!-- Right Side: Expand Icon for Inspector -->
         <div style="display: flex; align-items: center; justify-content: flex-end; padding-right: 12px;">
-          <div class="icon-ring" id="expandTrigger" style="-webkit-app-region: no-drag; cursor: pointer; position: relative; z-index: 100;" title="Network Inspector">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.3s;" id="expandIcon">
+          <div class="icon-ring" id="expandTrigger"
+            style="-webkit-app-region: no-drag; cursor: pointer; position: relative; z-index: 100;"
+            title="Network Inspector">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+              style="transition: transform 0.3s;" id="expandIcon">
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
               <line x1="9" y1="3" x2="9" y2="21"></line>
             </svg>
@@ -51,11 +71,11 @@
           <canvas id="speedDial" width="260" height="260"></canvas>
           <div class="dial-center">
             <div id="serverFlag" class="center-flag-container"></div>
-            
+
             <div class="readout-container">
               <!-- Original centre.png Logo -->
               <div id="centerLogo" class="center-logo">
-               <img src="centre.png" alt="ExitPing Logo">
+                <img src="centre.png" alt="ExitPing Logo">
               </div>
               <div id="speedReadout" class="speed-readout fade-out">
                 <span id="mainSpeed">0.00</span>
@@ -91,7 +111,8 @@
 
         <footer class="action-footer">
           <button id="startBtn" class="engine-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
+              class="btn-icon">
               <polygon points="5 3 19 12 5 21 5 3"></polygon>
             </svg>
             START
@@ -104,35 +125,41 @@
     <aside class="pro-dashboard" style="position: relative; overflow: hidden;">
       <div class="dashboard-header">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <h2>Network Insights</h2>
-          <span class="badge">PRO</span>
+          <h2>Network Insights </h2>
+          <span class="badge">v4</span>
         </div>
         <button id="dashboardSettingsBtn" class="icon-btn" title="Preferences">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+            </path>
           </svg>
         </button>
       </div>
 
       <!-- MAIN SCROLLABLE VIEW -->
       <div class="dashboard-content" style="display: flex; flex-direction: column; height: 100%;">
-        
+
         <!-- THE PRO METRICS SECTION -->
-        <div class="network-info-block" style="margin-bottom: 8px; background: rgba(0, 210, 255, 0.05); border: 1px solid rgba(0, 210, 255, 0.1); display: flex; flex-direction: column;">
+        <div class="network-info-block"
+          style="margin-bottom: 8px; background: rgba(0, 210, 255, 0.05); border: 1px solid rgba(0, 210, 255, 0.1); display: flex; flex-direction: column;">
           <!-- Top Row: Node & Latency -->
           <div style="display: flex; width: 100%; margin-bottom: 8px;">
             <div class="net-info-item" style="flex: 1;">
               <span class="net-label" style="color: var(--accent-cyan, #00d2ff);">ACTIVE NODE</span>
-              <span id="sidebarServerName" class="net-value" style="font-size: 13px; white-space: normal; line-height: 1.4;">Selecting Node...</span>
+              <span id="sidebarServerName" class="net-value"
+                style="font-size: 13px; white-space: normal; line-height: 1.4;">Selecting Node...</span>
             </div>
             <div class="net-divider" style="margin: 0 12px;"></div>
             <div class="net-info-item right" style="min-width: 60px;">
               <span class="net-label" style="color: var(--accent-cyan, #00d2ff);">LATENCY</span>
-              <span id="sidebarServerPing" class="net-value" style="font-family: monospace; font-size: 14px;">-- ms</span>
+              <span id="sidebarServerPing" class="net-value" style="font-family: monospace; font-size: 14px;">--
+                ms</span>
             </div>
           </div>
-          
+
           <!-- Bottom Row: Pro Metrics -->
           <div style="display: flex; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">
             <div class="net-info-item" style="flex: 1;">
@@ -147,7 +174,8 @@
             <div class="net-divider" style="margin: 0 12px;"></div>
             <div class="net-info-item right" style="flex: 1;">
               <span class="net-label">GRADE</span>
-              <span id="sidebarGrade" class="net-value" style="font-size: 14px; font-weight: 700; color: #fff;">--</span>
+              <span id="sidebarGrade" class="net-value"
+                style="font-size: 14px; font-weight: 700; color: #fff;">--</span>
             </div>
           </div>
         </div>
@@ -155,54 +183,100 @@
         <!-- NETWORK INFO BLOCK -->
         <div class="network-info-block" style="align-items: flex-start;">
           <div class="net-info-item" style="flex: 1;">
-            <span class="net-label">YOUR IP</span>
-            <span id="dashIp" class="net-value">Detecting...</span>
+            <span class="net-label" style="display: flex; align-items: center; gap: 4px;">
+              YOUR IP
+              <svg id="vpnBadgeDash" xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                style="display: none; color: var(--accent-cyan); filter: drop-shadow(0 0 3px var(--accent-cyan));"
+                title="VPN Protected Node">
+                <circle cx="7.5" cy="15.5" r="5.5"></circle>
+                <path d="m21 2-9.6 9.6"></path>
+                <path d="m15.5 7.5 3 3"></path>
+                <path d="M18.5 4.5 22 8"></path>
+              </svg>
+            </span>
+            <span id="dashIp" class="net-value mask-ip" title="Hover to reveal IP">Detecting...</span>
           </div>
           <div class="net-divider"></div>
           <div class="net-info-item right" style="flex: 1.2;">
             <span class="net-label">YOUR ISP</span>
             <!-- Added white-space normal to force wrapping instead of truncating -->
-            <span id="dashIsp" class="net-value" style="white-space: normal; word-break: break-word; line-height: 1.3; text-align: right;">Detecting...</span>
+            <span id="dashIsp" class="net-value"
+              style="white-space: normal; word-break: break-word; line-height: 1.3; text-align: right;">Detecting...</span>
           </div>
         </div>
-        
+
         <!-- GAME LATENCY MONITOR -->
-        <div class="game-ping-section accordion-group" style="margin-bottom: 24px;">
-          <div class="history-header">
-            <h3>Game Servers</h3>
+        <div class="game-ping-section accordion-group draggable-section open" draggable="true"
+          style="margin-bottom: 24px;">
+          <div class="history-header accordion-trigger">
+            <div style="display: flex; align-items: center; gap: 8px; cursor: grab;" class="drag-grabber">
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                style="opacity: 0.4;">
+                <circle cx="9" cy="5" r="1"></circle>
+                <circle cx="9" cy="12" r="1"></circle>
+                <circle cx="9" cy="19" r="1"></circle>
+                <circle cx="15" cy="5" r="1"></circle>
+                <circle cx="15" cy="12" r="1"></circle>
+                <circle cx="15" cy="19" r="1"></circle>
+              </svg>
+              <h3>Game Servers</h3>
+            </div>
+            <span class="accordion-chevron" style="margin-left: auto; margin-right: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
             <button id="refreshGamePingsBtn" class="icon-btn" title="Refresh Pings">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="23 4 23 10 17 10"></polyline>
                 <polyline points="1 20 1 14 7 14"></polyline>
                 <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
               </svg>
             </button>
           </div>
-          
-          <div class="game-list">
+
+          <div class="game-list accordion-content">
             <!-- Valorant Accordion Group -->
             <div class="accordion-item" data-id="valorant">
               <div class="game-item accordion-trigger">
                 <div class="game-info">
-                  <img src="game_logos/valorant.jpg" alt="Valorant" class="game-icon" style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
+                  <img src="game_logos/valorant.jpg" alt="Valorant" class="game-icon"
+                    style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
                   <span class="game-name">Valorant</span>
                 </div>
                 <div class="accordion-chevron">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                    <div class="sub-server-item"><span>NA East (N. Virginia)</span><span id="pingValNaEast" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>NA Central (Ohio)</span><span id="pingValNaCentral" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>NA West (N. Cali)</span><span id="pingValNaWest" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>SA (São Paulo)</span><span id="pingValSa" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>EU West (London)</span><span id="pingValEuWest" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>EU Central (Frankfurt)</span><span id="pingValEuCentral" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>AP South (Mumbai)</span><span id="pingValMumbai" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>AP SE (Singapore)</span><span id="pingValSingapore" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>AP NE (Tokyo)</span><span id="pingValTokyo" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingValOce" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>NA East (N. Virginia)</span><span id="pingValNaEast"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>NA Central (Ohio)</span><span id="pingValNaCentral"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>NA West (N. Cali)</span><span id="pingValNaWest"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>SA (São Paulo)</span><span id="pingValSa" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>EU West (London)</span><span id="pingValEuWest"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>EU Central (Frankfurt)</span><span id="pingValEuCentral"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>AP South (Mumbai)</span><span id="pingValMumbai"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>AP SE (Singapore)</span><span id="pingValSingapore"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>AP NE (Tokyo)</span><span id="pingValTokyo" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingValOce" class="game-ping">--
+                      ms</span></div>
                 </div>
               </div>
             </div>
@@ -211,26 +285,41 @@
             <div class="accordion-item" data-id="cs2">
               <div class="game-item accordion-trigger">
                 <div class="game-info">
-                  <img src="game_logos/csgo.png" alt="CS2" class="game-icon" style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
+                  <img src="game_logos/csgo.png" alt="CS2" class="game-icon"
+                    style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
                   <span class="game-name">Counter-Strike 2</span>
                 </div>
                 <div class="accordion-chevron">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                    <div class="sub-server-item"><span>US East (Sterling)</span><span id="pingCsUsEast" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>US West (Seattle)</span><span id="pingCsUsWest" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>EU West (Madrid)</span><span id="pingCsEuWest" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>EU North (Stockholm)</span><span id="pingCsEuNorth" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>EU Central (Frankfurt)</span><span id="pingCsFrankfurt" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Middle East (Dubai)</span><span id="pingCsDubai" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Asia (Chennai)</span><span id="pingCsChennai" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Asia (Hong Kong)</span><span id="pingCsHk" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Asia (Tokyo)</span><span id="pingCsTokyo" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingCsSydney" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>Africa (Johannesburg)</span><span id="pingCsAfrica" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>US East (Sterling)</span><span id="pingCsUsEast"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>US West (Seattle)</span><span id="pingCsUsWest"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>EU West (Madrid)</span><span id="pingCsEuWest" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>EU North (Stockholm)</span><span id="pingCsEuNorth"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>EU Central (Frankfurt)</span><span id="pingCsFrankfurt"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>Middle East (Dubai)</span><span id="pingCsDubai"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>Asia (Chennai)</span><span id="pingCsChennai" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>Asia (Hong Kong)</span><span id="pingCsHk" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>Asia (Tokyo)</span><span id="pingCsTokyo" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingCsSydney" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>Africa (Johannesburg)</span><span id="pingCsAfrica"
+                      class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -239,49 +328,222 @@
             <div class="accordion-item" data-id="lol">
               <div class="game-item accordion-trigger">
                 <div class="game-info">
-                  <img src="game_logos/lol.png" alt="LoL" class="game-icon" style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
+                  <img src="game_logos/lol.png" alt="LoL" class="game-icon"
+                    style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
                   <span class="game-name">League of Legends</span>
                 </div>
                 <div class="accordion-chevron">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                    <div class="sub-server-item"><span>NA (Chicago)</span><span id="pingLolNa" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>EUW (Amsterdam)</span><span id="pingLolEuw" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>EUNE (Frankfurt)</span><span id="pingLolEune" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>BR (São Paulo)</span><span id="pingLolBr" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>KR (Seoul)</span><span id="pingLolKr" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>JP (Tokyo)</span><span id="pingLolJp" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>SEA (Singapore)</span><span id="pingLolSg" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>TW (Taiwan)</span><span id="pingLolTw" class="game-ping">-- ms</span></div>
-                    <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingLolOce" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>NA (Chicago)</span><span id="pingLolNa" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>EUW (Amsterdam)</span><span id="pingLolEuw" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>EUNE (Frankfurt)</span><span id="pingLolEune" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>BR (São Paulo)</span><span id="pingLolBr" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>KR (Seoul)</span><span id="pingLolKr" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>JP (Tokyo)</span><span id="pingLolJp" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>SEA (Singapore)</span><span id="pingLolSg" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>TW (Taiwan)</span><span id="pingLolTw" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingLolOce" class="game-ping">--
+                      ms</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fortnite Accordion Group -->
+            <div class="accordion-item" data-id="fortnite">
+              <div class="game-item accordion-trigger">
+                <div class="game-info">
+                  <img src="game_logos/fortnite.png" alt="Fortnite" class="game-icon" onerror="this.style.opacity='0.5'"
+                    style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
+                  <span class="game-name">Fortnite</span>
+                </div>
+                <div class="accordion-chevron">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+              </div>
+              <div class="accordion-content">
+                <div class="sub-server-list">
+                  <div class="sub-server-item"><span>NA East (N. Virginia)</span><span id="pingFnNaEast"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>NA Central (Dallas)</span><span id="pingFnNaCentral"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>NA West (Oregon)</span><span id="pingFnNaWest" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>EU West (London)</span><span id="pingFnEuWest" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>EU Central (Frankfurt)</span><span id="pingFnEuCentral"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>Asia (Tokyo)</span><span id="pingFnAsiaTokyo" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>Asia (Singapore)</span><span id="pingFnAsiaSg" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingFnOce" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>Brazil (São Paulo)</span><span id="pingFnBr" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>Middle East (Mumbai)</span><span id="pingFnMe" class="game-ping">--
+                      ms</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Apex Legends Accordion Group -->
+            <div class="accordion-item" data-id="apex">
+              <div class="game-item accordion-trigger">
+                <div class="game-info">
+                  <img src="game_logos/apex.png" alt="Apex Legends" class="game-icon" onerror="this.style.opacity='0.5'"
+                    style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
+                  <span class="game-name">Apex Legends</span>
+                </div>
+                <div class="accordion-chevron">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+              </div>
+              <div class="accordion-content">
+                <div class="sub-server-list">
+                  <div class="sub-server-item"><span>US East (Virginia)</span><span id="pingApexUsEast"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>US West (Oregon)</span><span id="pingApexUsWest"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>EU West (Frankfurt)</span><span id="pingApexEuWest"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>EU East (London)</span><span id="pingApexEuEast"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>Asia (Singapore)</span><span id="pingApexAsiaSg"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>Asia (Tokyo)</span><span id="pingApexAsiaTokyo"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingApexOce" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>Brazil (São Paulo)</span><span id="pingApexSa" class="game-ping">--
+                      ms</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dota 2 Accordion Group -->
+            <div class="accordion-item" data-id="dota2">
+              <div class="game-item accordion-trigger">
+                <div class="game-info">
+                  <img src="game_logos/dota2.png" alt="Dota 2" class="game-icon" onerror="this.style.opacity='0.5'"
+                    style="width: 16px; height: 16px; object-fit: contain; border-radius: 3px;">
+                  <span class="game-name">Dota 2</span>
+                </div>
+                <div class="accordion-chevron">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+              </div>
+              <div class="accordion-content">
+                <div class="sub-server-list">
+                  <div class="sub-server-item"><span>US East (Sterling)</span><span id="pingDotaUsEast"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>US West (Seattle)</span><span id="pingDotaUsWest"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>Europe West (Luxembourg)</span><span id="pingDotaEuWest"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>Europe East (Vienna)</span><span id="pingDotaEuEast"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>Asia (Singapore)</span><span id="pingDotaSg" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>Asia (Seoul)</span><span id="pingDotaKr" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>OCE (Sydney)</span><span id="pingDotaOce" class="game-ping">--
+                      ms</span></div>
+                  <div class="sub-server-item"><span>South America (Peru)</span><span id="pingDotaPeru"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>South America (Chile)</span><span id="pingDotaChile"
+                      class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span>Africa (Johannesburg)</span><span id="pingDotaAfrica"
+                      class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-        <!-- COLLAPSIBLE HISTORY SECTION -->
-        <div class="history-section accordion-group open" style="margin-top: 0;">
-          <div class="history-header accordion-trigger" id="historyToggle">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <h3>Recent Tests</h3>
-              <span class="accordion-chevron">
-                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </span>
-            </div>
-            <button id="clearHistoryBtn" class="icon-btn" title="Clear History" style="margin-left: auto;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2-2v2"></path>
+        <!-- NETWORK TOOLS (TRACEROUTE) -->
+        <div class="network-tools-section accordion-group draggable-section" draggable="true"
+          style="margin-top: 16px; margin-bottom: 24px;">
+          <div class="history-header accordion-trigger">
+            <div style="display: flex; align-items: center; gap: 8px; cursor: grab;" class="drag-grabber">
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                style="opacity: 0.4;">
+                <circle cx="9" cy="5" r="1"></circle>
+                <circle cx="9" cy="12" r="1"></circle>
+                <circle cx="9" cy="19" r="1"></circle>
+                <circle cx="15" cy="5" r="1"></circle>
+                <circle cx="15" cy="12" r="1"></circle>
+                <circle cx="15" cy="19" r="1"></circle>
               </svg>
-            </button>
+              <h3>Network Tools</h3>
+            </div>
+            <span class="accordion-chevron">
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
           </div>
-          <div id="historyList" class="history-list accordion-content">
-            <div class="history-empty">No tests run yet.</div>
+          <div class="accordion-content">
+            <div class="bookmarks-section"
+              style="margin-bottom: 18px; border-bottom: 1px dashed var(--border-dim); padding-bottom: 14px;">
+              <h4
+                style="font-size: 9px; font-weight: 800; color: var(--text-low); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">
+                Bookmarked Routes</h4>
+              <div id="bookmarkedRoutesList" class="bookmarked-routes-list">
+                <div
+                  style="text-align: center; color: var(--text-low); font-size: 10px; padding: 12px 0; opacity: 0.5;">
+                  No bookmarked routes. Run a trace and save it.
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 6px; margin-top: 4px; align-items: center;">
+              <input type="text" id="traceHostInput" value="8.8.8.8"
+                style="flex:1; min-width:60px; background:var(--bg-surface); border:1px solid var(--border-dim); color:var(--text-high); padding:6px; border-radius:6px; font-size:11px;"
+                placeholder="Host or IP">
+              <button id="startTraceBtn"
+                style="flex-shrink:0; background:var(--accent-cyan); color:#fff; border:none; padding:6px 10px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer;">Trace</button>
+              <button id="clearTraceBtn"
+                style="flex-shrink:0; background:transparent; border:1px solid var(--border-dim); color:var(--text-med); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer;"
+                title="Clear current trace">Clear</button>
+              <button id="bookmarkTraceBtn"
+                style="flex-shrink:0; background:transparent; border:1px solid var(--border-dim); color:var(--text-med); padding:6px 10px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer;"
+                disabled title="Bookmark current trace">★ Save</button>
+            </div>
+            <div id="traceHopsList" class="trace-hops-container">
+              <div style="text-align: center; color: var(--text-low); font-size: 11px; margin-top: 30px; opacity: 0.7;">
+                Enter a host and click Trace to begin diagnostics.
+              </div>
+            </div>
           </div>
         </div>
+
+
       </div>
 
       <!-- THE HIDDEN SETTINGS POPUP -->
@@ -289,7 +551,8 @@
         <div class="history-header" style="margin-bottom: 24px;">
           <h3>Preferences</h3>
           <button id="closeSettingsBtn" class="icon-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -309,6 +572,62 @@
 
         <div class="settings-row" style="margin-bottom: 24px;">
           <div class="settings-info">
+            <span class="text-main">Silent Boot Check</span>
+            <span class="text-sub">Notify network health on startup</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="silentCheckToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row" style="margin-bottom: 24px;">
+          <div class="settings-info">
+            <span class="text-main">Low Internet Alerts</span>
+            <span class="text-sub">Notify when latency spikes or speeds drop</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="lowInternetNotifyToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row" style="margin-bottom: 24px;">
+          <div class="settings-info">
+            <span class="text-main">Visual Theme</span>
+            <span class="text-sub">Select interface styling</span>
+          </div>
+          <select id="themeSelect" class="select-modern">
+            <option value="dark">Neon Dark</option>
+            <option value="red">Crimson Red</option>
+            <option value="white">Cyber White</option>
+          </select>
+        </div>
+
+        <div class="settings-row" style="margin-bottom: 24px;">
+          <div class="settings-info">
+            <span class="text-main">App Size</span>
+            <span class="text-sub">Scale application window</span>
+          </div>
+          <select id="sizeSelect" class="select-modern">
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </div>
+
+        <div class="settings-row" style="margin-bottom: 24px;">
+          <div class="settings-info">
+            <span class="text-main">Network Interface</span>
+            <span class="text-sub" style="white-space: normal; line-height: 1.2;">Select adapter for testing</span>
+          </div>
+          <select id="interfaceSelect" class="select-modern">
+            <option value="">Default Route</option>
+          </select>
+        </div>
+
+        <div class="settings-row" style="margin-bottom: 24px;">
+          <div class="settings-info">
             <span class="text-main">Auto-Test on Open</span>
             <span class="text-sub">Run immediately on launch</span>
           </div>
@@ -318,8 +637,19 @@
           </label>
         </div>
 
-        <div class="settings-note" style="margin-top: auto; border-top: none; justify-content: center; opacity: 0.3; font-size: 11px; font-weight: 400; letter-spacing: 0;">
-          © 2026 ExitPing | All rights reserved
+        <div class="settings-note"
+          style="margin-top: auto; border-top: none; display: flex; justify-content: space-between; align-items: center; opacity: 0.3; font-size: 11px; font-weight: 400; letter-spacing: 0; width: 100%;">
+          <span>© 2026 ExitPing | All rights reserved</span>
+          <a href="https://github.com/ash-kernel/exitping" id="githubLink" class="github-link"
+            style="color: var(--accent-cyan); text-decoration: none; font-weight: 700; font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 4px; transition: opacity 0.2s; cursor: pointer; -webkit-app-region: no-drag; opacity: 0.8;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              style="transform: translateY(-0.5px);">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            source code
+          </a>
         </div>
       </div>
 
@@ -329,9 +659,10 @@
 
   <script type="module" src="./app.js"></script>
 
-<!-- THE UPDATE MODAL (Hidden by default) -->
-  <div id="updateModal" class="update-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.7); backdrop-filter: blur(12px); z-index: 9999; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;">
-    
+  <!-- THE UPDATE MODAL (Hidden by default) -->
+  <div id="updateModal" class="update-overlay"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.7); backdrop-filter: blur(12px); z-index: 9999; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;">
+
     <style>
       .update-box {
         background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
@@ -340,45 +671,77 @@
         padding: 32px 28px;
         width: 320px;
         text-align: center;
-        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         transform: translateY(20px) scale(0.95);
         transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
+
       .update-icon-wrapper {
         background: radial-gradient(circle at center, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
-        width: 80px; height: 80px; margin: 0 auto 12px;
-        display: flex; align-items: center; justify-content: center;
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
+
       .update-icon {
         background: #0f172a;
         border: 1px solid rgba(56, 189, 248, 0.4);
-        width: 48px; height: 48px; border-radius: 14px;
-        display: flex; align-items: center; justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
       }
+
       .btn-modern-ghost {
-        flex: 1; padding: 10px 0; border-radius: 8px; font-weight: 600; font-size: 13px;
-        background: rgba(255,255,255,0.03); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.08);
-        cursor: pointer; transition: all 0.2s ease;
+        flex: 1;
+        padding: 10px 0;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: rgba(255, 255, 255, 0.03);
+        color: #cbd5e1;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        cursor: pointer;
+        transition: all 0.2s ease;
       }
-      .btn-modern-ghost:hover { 
-        background: rgba(255,255,255,0.08); color: #fff; 
+
+      .btn-modern-ghost:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
       }
+
       .btn-modern-primary {
-        flex: 1; padding: 10px 0; border-radius: 8px; font-weight: 600; font-size: 13px;
-        background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #fff; border: none;
-        cursor: pointer; transition: all 0.2s ease;
+        flex: 1;
+        padding: 10px 0;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: linear-gradient(135deg, #0ea5e9, #0284c7);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
         box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
       }
-      .btn-modern-primary:hover { 
-        transform: translateY(-1px); box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4); filter: brightness(1.1); 
+
+      .btn-modern-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4);
+        filter: brightness(1.1);
       }
     </style>
 
     <div class="update-box">
       <div class="update-icon-wrapper">
         <div class="update-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="16 16 12 20 8 16"></polyline>
             <line x1="12" y1="12" x2="12" y2="20"></line>
             <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
@@ -386,9 +749,12 @@
         </div>
       </div>
 
-      <h2 style="color: #f8fafc; margin: 0 0 8px; font-size: 20px; font-weight: 600; letter-spacing: -0.02em;">Update Available</h2>
-      <p style="color: #94a3b8; font-size: 13px; margin: 0 0 28px; line-height: 1.5;">ExitPing <strong id="newVersionTag" style="color: #e2e8f0; font-weight: 600;">--</strong> is ready to install.<br>You are currently on <span id="currentVersionTag">--</span>.</p>
-      
+      <h2 style="color: #f8fafc; margin: 0 0 8px; font-size: 20px; font-weight: 600; letter-spacing: -0.02em;">Update
+        Available</h2>
+      <p style="color: #94a3b8; font-size: 13px; margin: 0 0 28px; line-height: 1.5;">ExitPing <strong
+          id="newVersionTag" style="color: #e2e8f0; font-weight: 600;">--</strong> is ready to install.<br>You are
+        currently on <span id="currentVersionTag">--</span>.</p>
+
       <div style="display: flex; gap: 12px; justify-content: center;">
         <button id="skipUpdateBtn" class="btn-modern-ghost">Skip for now</button>
         <button id="downloadUpdateBtn" class="btn-modern-primary">Update Now</button>
@@ -397,4 +763,5 @@
   </div>
 
 </body>
+
 </html>

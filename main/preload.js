@@ -2,7 +2,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
   // Speed Test Engine
-  runTest: () => ipcRenderer.send("start-speedtest"),
+  runTest: (localAddress) => ipcRenderer.send("start-speedtest", localAddress),
   
   onProgress: (cb) => {
     ipcRenderer.removeAllListeners("speedtest-progress");
@@ -17,10 +17,37 @@ contextBridge.exposeInMainWorld("api", {
   // UI Expansion
   toggleExpand: (isExpanded) => ipcRenderer.send("toggle-expand", isExpanded),
 
-  // OS Settings
+  // OS Settings / Autolaunch
   getAutoLaunch: () => ipcRenderer.invoke("get-autolaunch"),
   setAutoLaunch: (enable) => ipcRenderer.send("set-autolaunch", enable),
 
-  // NEW: Bulletproof Network Fetcher
-  getNetworkIdentity: () => ipcRenderer.invoke("get-network-identity")
+  // Silent health check settings
+  getSilentCheck: () => ipcRenderer.invoke("get-silent-check"),
+  setSilentCheck: (enable) => ipcRenderer.send("set-silent-check", enable),
+
+  // Network Identity & Interface Utilities
+  getNetworkIdentity: () => ipcRenderer.invoke("get-network-identity"),
+  getNetworkInterfaces: () => ipcRenderer.invoke("get-network-interfaces"),
+
+  // Geolocation & Latency Socket Engines
+  geolocateIp: (ip) => ipcRenderer.invoke("geolocate-ip", ip),
+  pingHost: (hostname, port) => ipcRenderer.invoke("ping-host", hostname, port),
+
+  // Traceroute Diagnostics
+  startTraceroute: (targetHost) => ipcRenderer.send("start-traceroute", targetHost),
+  onTracerouteData: (cb) => {
+    ipcRenderer.removeAllListeners("traceroute-data");
+    ipcRenderer.on("traceroute-data", (_, data) => cb(data));
+  },
+
+  // Sizing Preferences
+  setAppSize: (size) => ipcRenderer.send("set-app-size", size),
+  getAppSize: () => ipcRenderer.invoke("get-app-size"),
+
+  // External Links
+  openExternal: (url) => ipcRenderer.send("open-external", url),
+  openLink: (url) => ipcRenderer.send("open-external", url),
+
+  // Native Notifications
+  showNotification: (title, body) => ipcRenderer.send("show-notification", title, body)
 });

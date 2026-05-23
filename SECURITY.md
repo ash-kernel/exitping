@@ -6,9 +6,9 @@ We take the security of this project seriously. Currently, we provide security u
 
 | Version | Supported          | Notes |
 | ------- | ------------------ | ----- |
-| 3.x.x   | :white_check_mark: | Active development and all security updates. |
-| 2.x.x   | :white_check_mark: | Critical security patches only. |
-| < 2.0   | :x:                | End of life. No longer receiving updates. |
+| 4.x.x   | :white_check_mark: | Active development and all security updates. |
+| 3.x.x   | :white_check_mark: | Critical security patches only. |
+| < 3.0   | :x:                | End of life. No longer receiving updates. |
 
 ## Reporting a Vulnerability
 

@@ -25,24 +25,35 @@ function fetchBestServer() {
   });
 }
 
-function measurePing(serverUrl, progressCallback) {
+function measurePing(serverUrl, testContext, progressCallback) {
   return new Promise(async (resolve) => {
     progressCallback({ phase: "ping", status: "probing", value: "--" });
     const url = new URL(serverUrl);
+    const isLinode = serverUrl.includes('linode.com');
     const pingPromises = Array.from({ length: 4 }).map((_, i) => {
       return new Promise(res => {
         const start = performance.now();
-        const req = https.request({
+        const options = {
           method: 'HEAD',
           hostname: url.hostname,
-          path: `/latency.txt?x=${Date.now()}_${i}`,
+          path: isLinode ? `/empty.php?x=${Date.now()}_${i}` : `/latency.txt?x=${Date.now()}_${i}`,
           timeout: 2000,
           headers: { 'Connection': 'close' }
-        }, () => {
+        };
+        if (testContext && testContext.localAddress) {
+          options.localAddress = testContext.localAddress;
+        }
+        
+        const req = https.request(options, () => {
           res(Math.round(performance.now() - start));
         });
         
-        req.on('error', () => res(Infinity));
+        req.on('error', (err) => {
+          if (err && (err.code === 'EADDRNOTAVAIL' || err.code === 'EADDRINUSE')) {
+            if (testContext) testContext.localAddress = null;
+          }
+          res(Infinity);
+        });
         req.on('timeout', () => { req.destroy(); res(Infinity); });
         req.end();
       });
@@ -57,7 +68,7 @@ function measurePing(serverUrl, progressCallback) {
   });
 }
 
-async function runSpeedTest(progressCallback) {
+async function runSpeedTest(localAddress, progressCallback) {
   try {
     const targetServer = await fetchBestServer().catch(() => ({
         name: "Fallback Node",
@@ -68,23 +79,26 @@ async function runSpeedTest(progressCallback) {
     const serverName = `${targetServer.sponsor || 'Enterprise Node'} - ${targetServer.name || 'Local'}`;
     progressCallback({ phase: "server-selected", serverName });
 
+    const isLinode = targetServer.url.includes('linode.com');
     const serverConfig = {
-        downloadUrl: targetServer.url.replace('upload.php', 'random3500x3500.jpg'),
+        downloadUrl: isLinode ? targetServer.url.replace('upload.php', 'garbage.php?ckSize=100') : targetServer.url.replace('upload.php', 'random3500x3500.jpg'),
         uploadUrl: targetServer.url
     };
 
-    const pingMs = await measurePing(serverConfig.uploadUrl, progressCallback);
+    const testContext = { localAddress };
+
+    const pingMs = await measurePing(serverConfig.uploadUrl, testContext, progressCallback);
     await new Promise(r => setTimeout(r, 50));
 
     progressCallback({ phase: "download", speed: 0 });
-    const finalDownload = await downloadTest(serverConfig, (speed) => {
+    const finalDownload = await downloadTest(serverConfig, testContext, (speed) => {
         progressCallback({ phase: "download", speed });
     }, 8000);
     
     await new Promise(r => setTimeout(r, 50));
 
     progressCallback({ phase: "upload", speed: 0 });
-    const finalUpload = await uploadTest(serverConfig, (speed) => {
+    const finalUpload = await uploadTest(serverConfig, testContext, (speed) => {
         progressCallback({ phase: "upload", speed });
     }, 8000);
 

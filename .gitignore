@@ -7,5 +7,3 @@ package-lock.json
 dist_electron/
 
 dist/
-
-renderer/game_logos/content.png

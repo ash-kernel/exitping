@@ -1,9 +1,8 @@
-# ExitPing
-
 <div align="center">
-  <img src="./assets/readme/banner.png" width="400">
+  <img src="./assets/readme/banner.png" width="450">
 </div>
 
+<br> <br>
 Lightweight desktop network diagnostics engine with real-time latency monitoring, speed testing, traceroutes, and live game RTT analysis inside a modern tray-based interface.
 
 [Download](https://github.com/ash-kernel/exitping/releases) • [Security Issues](https://github.com/ash-kernel/exitping/issues) • [Preview](PREVIEW.md)

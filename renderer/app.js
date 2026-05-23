@@ -1304,7 +1304,7 @@ setTimeout(refreshGamePings, 2000);
 
 // --- AUTO-UPDATER ENGINE ---
 
-let APP_VERSION = "3.5.0";
+let APP_VERSION = "4.0.0";
 try {
   const versionRes = await fetch('../version.json');
   if (versionRes.ok) {

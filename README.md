@@ -51,17 +51,6 @@ Download the latest installer from the [Releases](https://github.com/ash-kernel/
 
 ---
 
-## Installer
-
-Custom NSIS installer with:
-- User-space installation
-- Custom banners
-- License support
-- One-click disabled
-- Custom branding macros
-
----
-
 ## License
 
 © 2026 ExitPing — All rights reserved.

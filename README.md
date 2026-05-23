@@ -6,7 +6,7 @@
 
 Lightweight desktop network diagnostics engine with real-time latency monitoring, speed testing, traceroutes, and live game RTT analysis inside a modern tray-based interface.
 
-[Download](https://github.com/ash-kernel/exitping/releases) • [Documentation](#) • [Preview](PREVIEW.md)
+[Download](https://github.com/ash-kernel/exitping/releases) • [Security Issues](https://github.com/ash-kernel/exitping/issues) • [Preview](PREVIEW.md)
 
 ---
 

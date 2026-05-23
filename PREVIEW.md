@@ -5,19 +5,19 @@ A clean, modern preview of the app UI.
 ## Home
 
 <p align="center">
-  <img src="./assets/readme/full_home.png" alt="ExitPing full home preview" width="400" />
+  <img src="./assets/readme/full_home.png" alt="ExitPing full home preview" width="700" />
 </p>
 
 ## Compact Home
 
 <p align="center">
-  <img src="./assets/readme/home_ui.png" alt="ExitPing home UI preview" width="350" />
+  <img src="./assets/readme/home_ui.png" alt="ExitPing home UI preview" width="550" />
 </p>
 
 ## Settings
 
 <p align="center">
-  <img src="./assets/readme/settings.png" alt="ExitPing settings preview" width="250" />
+  <img src="./assets/readme/settings.png" alt="ExitPing settings preview" width="450" />
 </p>
 
 ## Overview

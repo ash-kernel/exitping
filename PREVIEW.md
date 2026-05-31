@@ -2,23 +2,21 @@
 
 A clean, modern preview of the app UI.
 
-## Home
+## Screenshots
 
-<p align="center">
-  <img src="./assets/readme/full_home.png" alt="ExitPing full home preview" width="700" />
-</p>
+![ExitPing preview 1](./assets/readme/preview_1.png)
 
-## Compact Home
+![ExitPing preview 2](./assets/readme/preview_2.png)
 
-<p align="center">
-  <img src="./assets/readme/home_ui.png" alt="ExitPing home UI preview" width="550" />
-</p>
+![ExitPing preview 3](./assets/readme/preview_3.png)
 
-## Settings
+![ExitPing preview 4](./assets/readme/preview_4.png)
 
-<p align="center">
-  <img src="./assets/readme/settings.png" alt="ExitPing settings preview" width="450" />
-</p>
+![ExitPing preview 5](./assets/readme/preview_5.png)
+
+![ExitPing preview 6](./assets/readme/preview_6.png)
+
+![ExitPing preview 7](./assets/readme/preview_7.png)
 
 ## Overview
 

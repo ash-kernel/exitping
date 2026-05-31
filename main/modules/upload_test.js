@@ -139,7 +139,7 @@ function uploadTest(server, testContext, progressCallback, duration = 8000) {
         socket.destroy();
       }
 
-      resolve(finalSpeed > 0 ? finalSpeed : 0);
+      resolve({ speed: finalSpeed > 0 ? finalSpeed : 0, bytes: finalBytesUploaded });
     }, duration);
   });
 }

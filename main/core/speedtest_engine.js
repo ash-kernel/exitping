@@ -4,6 +4,30 @@ const { performance } = require("perf_hooks");
 const downloadTest = require("../modules/download_test");
 const uploadTest = require("../modules/upload_test");
 
+function measurePingSingle(serverUrl, testContext) {
+  return new Promise(res => {
+    const start = performance.now();
+    const url = new URL(serverUrl);
+    const isLinode = serverUrl.includes('linode.com');
+    const options = {
+      method: 'HEAD',
+      hostname: url.hostname,
+      path: isLinode ? `/empty.php?x=${Date.now()}_${Math.random()}` : `/latency.txt?x=${Date.now()}_${Math.random()}`,
+      timeout: 2000,
+      headers: { 'Connection': 'close' }
+    };
+    if (testContext && testContext.localAddress) {
+      options.localAddress = testContext.localAddress;
+    }
+    const req = https.request(options, () => {
+      res(Math.round(performance.now() - start));
+    });
+    req.on('error', () => res(Infinity));
+    req.on('timeout', () => { req.destroy(); res(Infinity); });
+    req.end();
+  });
+}
+
 function fetchBestServer() {
   return new Promise((resolve, reject) => {
     https.get('https://www.speedtest.net/api/js/servers?engine=js&limit=5', {
@@ -77,7 +101,7 @@ async function runSpeedTest(localAddress, progressCallback) {
     }));
 
     const serverName = `${targetServer.sponsor || 'Enterprise Node'} - ${targetServer.name || 'Local'}`;
-    progressCallback({ phase: "server-selected", serverName });
+    progressCallback({ phase: "server-selected", serverName, server: targetServer });
 
     const isLinode = targetServer.url.includes('linode.com');
     const serverConfig = {
@@ -90,22 +114,57 @@ async function runSpeedTest(localAddress, progressCallback) {
     const pingMs = await measurePing(serverConfig.uploadUrl, testContext, progressCallback);
     await new Promise(r => setTimeout(r, 50));
 
+    let downloadPings = [];
+    let stopDownloadPing = false;
+    const downloadPingLoop = async () => {
+      while(!stopDownloadPing) {
+        const p = await measurePingSingle(serverConfig.uploadUrl, testContext);
+        if (p !== Infinity) downloadPings.push(p);
+        await new Promise(r => setTimeout(r, 800));
+      }
+    };
+    downloadPingLoop();
+
     progressCallback({ phase: "download", speed: 0 });
-    const finalDownload = await downloadTest(serverConfig, testContext, (speed) => {
+    const dlResult = await downloadTest(serverConfig, testContext, (speed) => {
         progressCallback({ phase: "download", speed });
     }, 8000);
+    stopDownloadPing = true;
+    const finalDownload = dlResult.speed;
+    const downloadBytes = dlResult.bytes;
+    const avgDownloadPing = downloadPings.length > 0 ? Math.round(downloadPings.reduce((a,b)=>a+b,0)/downloadPings.length) : pingMs;
     
     await new Promise(r => setTimeout(r, 50));
 
+    let uploadPings = [];
+    let stopUploadPing = false;
+    const uploadPingLoop = async () => {
+      while(!stopUploadPing) {
+        const p = await measurePingSingle(serverConfig.uploadUrl, testContext);
+        if (p !== Infinity) uploadPings.push(p);
+        await new Promise(r => setTimeout(r, 800));
+      }
+    };
+    uploadPingLoop();
+
     progressCallback({ phase: "upload", speed: 0 });
-    const finalUpload = await uploadTest(serverConfig, testContext, (speed) => {
+    const ulResult = await uploadTest(serverConfig, testContext, (speed) => {
         progressCallback({ phase: "upload", speed });
     }, 8000);
+    stopUploadPing = true;
+    const finalUpload = ulResult.speed;
+    const uploadBytes = ulResult.bytes;
+    const avgUploadPing = uploadPings.length > 0 ? Math.round(uploadPings.reduce((a,b)=>a+b,0)/uploadPings.length) : pingMs;
 
     const result = {
       ping: pingMs,
+      downloadPing: avgDownloadPing,
+      uploadPing: avgUploadPing,
       download: finalDownload,
-      upload: finalUpload
+      downloadBytes: downloadBytes,
+      upload: finalUpload,
+      uploadBytes: uploadBytes,
+      server: targetServer
     };
     
     progressCallback({ phase: "complete", result });

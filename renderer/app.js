@@ -291,7 +291,8 @@ function restoreDashboardOrder() {
     order.forEach(className => {
       if (!className) return;
       const el = document.querySelector(`.${className}`);
-      if (el && container) {
+      // Only move elements that are still meant to be draggable
+      if (el && el.classList.contains('draggable-section') && container) {
         if (historySec && historySec.parentNode === container) {
           container.insertBefore(el, historySec);
         } else {
@@ -738,6 +739,62 @@ renderBookmarks();
 restoreDashboardOrder();
 initializeDraggableSections();
 
+function updateIdentityUI() {
+  if (window.api && window.api.getNetworkIdentity) {
+    window.api.getNetworkIdentity().then(data => {
+      const speedLocalIp = document.getElementById("speedLocalIp");
+      const speedPublicIp = document.getElementById("speedPublicIp");
+      const speedNetworkType = document.getElementById("speedNetworkType");
+      const speedAsn = document.getElementById("speedAsn");
+
+      if (speedPublicIp) speedPublicIp.textContent = data.ip || "--";
+      if (speedNetworkType) speedNetworkType.textContent = data.type || "Unknown";
+      if (speedAsn) speedAsn.textContent = data.asn || "Unknown";
+    });
+  }
+  if (window.api && window.api.getNetworkInterfaces) {
+    window.api.getNetworkInterfaces().then(interfaces => {
+      const active = interfaces.find(i => i.isPrimary) || interfaces[0];
+      const speedLocalIp = document.getElementById("speedLocalIp");
+      if (speedLocalIp && active) speedLocalIp.textContent = active.ip || "127.0.0.1";
+    });
+  }
+}
+updateIdentityUI();
+
+function renderHistory() {
+  const container = document.getElementById("historyListContainer");
+  if (!container) return;
+  const history = JSON.parse(localStorage.getItem("exitping_history") || "[]");
+  if (history.length === 0) {
+    container.innerHTML = `<div class="empty-state">No historical tests found.</div>`;
+    return;
+  }
+
+  let html = `<div style="display:flex; flex-direction:column; gap:2px;">`;
+  history.forEach(item => {
+    html += `
+      <div style="display:flex; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.03); border-radius:4px; font-size:10px;">
+        <span style="color:var(--text-low);">${item.date}</span>
+        <span><span style="color:var(--text-low);">Ping:</span> ${item.ping}ms</span>
+        <span><span style="color:var(--text-low);">DL:</span> <span style="color:var(--accent-cyan);">${item.dl}</span></span>
+        <span><span style="color:var(--text-low);">UL:</span> <span style="color:var(--accent-secondary);">${item.ul}</span></span>
+      </div>
+    `;
+  });
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function saveHistory(resultData) {
+  let history = JSON.parse(localStorage.getItem("exitping_history") || "[]");
+  history.unshift(resultData);
+  if (history.length > 4) history.length = 4;
+  localStorage.setItem("exitping_history", JSON.stringify(history));
+  renderHistory();
+}
+renderHistory();
+
 const AUTO_TEST_KEY = "exitping_autotest";
 const savedAutoTestSetting = localStorage.getItem(AUTO_TEST_KEY);
 const isAutoTestEnabled = savedAutoTestSetting === null ? true : savedAutoTestSetting === "true";
@@ -935,6 +992,35 @@ if (window.api) {
         startBtn.disabled = false;
         startBtn.style.opacity = "1";
 
+        if (data.result) {
+          const dlPing = data.result.downloadPing || "--";
+          const ulPing = data.result.uploadPing || "--";
+          const dlBytes = data.result.downloadBytes || 0;
+          const ulBytes = data.result.uploadBytes || 0;
+          const totalMb = ((dlBytes + ulBytes) / (1024 * 1024)).toFixed(1);
+
+          const elDlPing = document.getElementById("speedDlPing");
+          const elUlPing = document.getElementById("speedUlPing");
+          const elDataUsage = document.getElementById("speedDataUsage");
+
+          if (elDlPing) {
+            elDlPing.textContent = `${dlPing} ms`;
+            elDlPing.style.color = dlPing > 100 ? "#f87171" : "var(--text-high)";
+          }
+          if (elUlPing) {
+            elUlPing.textContent = `${ulPing} ms`;
+            elUlPing.style.color = ulPing > 100 ? "#f87171" : "var(--text-high)";
+          }
+          if (elDataUsage) elDataUsage.textContent = `${totalMb} MB`;
+
+          saveHistory({
+            date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            ping: finalPing,
+            dl: (data.result.download || 0).toFixed(1),
+            ul: (data.result.upload || 0).toFixed(1)
+          });
+        }
+
         // Clear the traced locations inside Network Tools
         if (traceHopsList) {
           traceHopsList.innerHTML = `
@@ -954,10 +1040,13 @@ if (window.api) {
         let gradeColor = "#34d399"; // Green
         let statusText = "Optimal Routing";
 
-        if (finalPing > 100 || targetSpeed < 10) {
-          grade = "D"; gradeColor = "#f87171"; statusText = "Poor Connection";
+        let dlPing = data.result?.downloadPing || finalPing;
+        let ulPing = data.result?.uploadPing || finalPing;
+
+        if (finalPing > 100 || targetSpeed < 10 || dlPing > 150) {
+          grade = "D"; gradeColor = "#f87171"; statusText = "Poor Connection (Bufferbloat)";
         }
-        else if (finalPing > 60 || targetSpeed < 30) {
+        else if (finalPing > 60 || targetSpeed < 30 || dlPing > 100) {
           grade = "C"; gradeColor = "#facc15"; statusText = "Degraded Routing";
         }
         else if (finalPing > 30 || targetSpeed < 100) {
@@ -1073,6 +1162,9 @@ const gameServerRegistry = [
   { id: 'pingValSingapore', url: 'https://dynamodb.ap-southeast-1.amazonaws.com/?x=', offset: 2 }, // Singapore
   { id: 'pingValTokyo', url: 'https://dynamodb.ap-northeast-1.amazonaws.com/?x=', offset: 5 }, // Tokyo
   { id: 'pingValOce', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },  // Sydney
+  { id: 'pingValTexas', url: 'https://dynamodb.us-east-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingValLatam', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 2 },
+  { id: 'pingValParis', url: 'https://dynamodb.eu-west-3.amazonaws.com/?x=', offset: 1 },
 
   // COUNTER-STRIKE 2 (Valve SDR Proxies)
   { id: 'pingCsUsEast', url: 'https://dynamodb.us-east-1.amazonaws.com/?x=', offset: 2 },     // Sterling
@@ -1086,6 +1178,9 @@ const gameServerRegistry = [
   { id: 'pingCsTokyo', url: 'https://dynamodb.ap-northeast-1.amazonaws.com/?x=', offset: 1 }, // Tokyo
   { id: 'pingCsSydney', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },// Sydney
   { id: 'pingCsAfrica', url: 'https://dynamodb.af-south-1.amazonaws.com/?x=', offset: 2 },    // Johannesburg
+  { id: 'pingCsChicago', url: 'https://dynamodb.us-east-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingCsSaoPaulo', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingCsSeoul', url: 'https://dynamodb.ap-northeast-2.amazonaws.com/?x=', offset: 1 },
 
   // LEAGUE OF LEGENDS (Riot Shards)
   { id: 'pingLolNa', url: 'https://dynamodb.us-east-2.amazonaws.com/?x=', offset: 4 },        // Chicago
@@ -1097,6 +1192,9 @@ const gameServerRegistry = [
   { id: 'pingLolSg', url: 'https://dynamodb.ap-southeast-1.amazonaws.com/?x=', offset: 1 },   // Singapore
   { id: 'pingLolTw', url: 'https://dynamodb.ap-east-1.amazonaws.com/?x=', offset: 2 },        // Taiwan/HK
   { id: 'pingLolOce', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },  // Sydney
+  { id: 'pingLolLan', url: 'https://dynamodb.us-east-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingLolLas', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingLolRu', url: 'https://dynamodb.eu-north-1.amazonaws.com/?x=', offset: 1 },
 
   // FORTNITE (Epic Games AWS/Azure)
   { id: 'pingFnNaEast', url: 'https://dynamodb.us-east-1.amazonaws.com/?x=', offset: 1 },
@@ -1109,6 +1207,8 @@ const gameServerRegistry = [
   { id: 'pingFnOce', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },
   { id: 'pingFnBr', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 2 },
   { id: 'pingFnMe', url: 'https://dynamodb.ap-south-1.amazonaws.com/?x=', offset: 0 },
+  { id: 'pingFnBahrain', url: 'https://dynamodb.me-south-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingFnMumbai', url: 'https://dynamodb.ap-south-1.amazonaws.com/?x=', offset: 1 },
 
   // APEX LEGENDS (EA Multiplay AWS)
   { id: 'pingApexUsEast', url: 'https://dynamodb.us-east-1.amazonaws.com/?x=', offset: 2 },
@@ -1119,6 +1219,9 @@ const gameServerRegistry = [
   { id: 'pingApexAsiaTokyo', url: 'https://dynamodb.ap-northeast-1.amazonaws.com/?x=', offset: 3 },
   { id: 'pingApexOce', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },
   { id: 'pingApexSa', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 2 },
+  { id: 'pingApexFrankfurt', url: 'https://dynamodb.eu-central-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingApexIowa', url: 'https://dynamodb.us-east-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingApexTaiwan', url: 'https://dynamodb.ap-east-1.amazonaws.com/?x=', offset: 1 },
 
   // DOTA 2 (Valve SDR Network)
   { id: 'pingDotaUsEast', url: 'https://dynamodb.us-east-1.amazonaws.com/?x=', offset: 2 },
@@ -1130,7 +1233,50 @@ const gameServerRegistry = [
   { id: 'pingDotaOce', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },
   { id: 'pingDotaPeru', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 4 },
   { id: 'pingDotaChile', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 3 },
-  { id: 'pingDotaAfrica', url: 'https://dynamodb.af-south-1.amazonaws.com/?x=', offset: 2 }
+  { id: 'pingDotaAfrica', url: 'https://dynamodb.af-south-1.amazonaws.com/?x=', offset: 2 },
+  { id: 'pingDotaStockholm', url: 'https://dynamodb.eu-north-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingDotaDubai', url: 'https://dynamodb.me-south-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingDotaArgentina', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 1 },
+
+  // OVERWATCH 2 (GCP/AWS Mix)
+  { id: 'pingOw2UsWest', url: 'https://dynamodb.us-west-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingOw2UsEast', url: 'https://dynamodb.us-east-1.amazonaws.com/?x=', offset: 2 },
+  { id: 'pingOw2Eu', url: 'https://dynamodb.eu-west-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingOw2Kr', url: 'https://dynamodb.ap-northeast-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingOw2Jp', url: 'https://dynamodb.ap-northeast-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingOw2Chicago', url: 'https://dynamodb.us-east-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingOw2Brazil', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingOw2Sydney', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingOw2Taiwan', url: 'https://dynamodb.ap-east-1.amazonaws.com/?x=', offset: 1 },
+
+  // RAINBOW SIX SIEGE (Azure)
+  { id: 'pingR6sUsEast', url: 'https://dynamodb.us-east-1.amazonaws.com/?x=', offset: 2 },
+  { id: 'pingR6sUsWest', url: 'https://dynamodb.us-west-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingR6sUsCentral', url: 'https://dynamodb.us-east-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingR6sEuWest', url: 'https://dynamodb.eu-west-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingR6sEuNorth', url: 'https://dynamodb.eu-west-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingR6sJp', url: 'https://dynamodb.ap-northeast-1.amazonaws.com/?x=', offset: 2 },
+  { id: 'pingR6sSydney', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingR6sBrazil', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingR6sSouthAfrica', url: 'https://dynamodb.af-south-1.amazonaws.com/?x=', offset: 1 },
+
+  // PUBG (AWS)
+  { id: 'pingPubgNa', url: 'https://dynamodb.us-east-1.amazonaws.com/?x=', offset: 2 },
+  { id: 'pingPubgEu', url: 'https://dynamodb.eu-central-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingPubgAs', url: 'https://dynamodb.ap-northeast-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingPubgSg', url: 'https://dynamodb.ap-southeast-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingPubgSeoul', url: 'https://dynamodb.ap-northeast-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingPubgOce', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingPubgSa', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 1 },
+
+  // CALL OF DUTY (Demonware/AWS)
+  { id: 'pingCodUsEast', url: 'https://dynamodb.us-east-2.amazonaws.com/?x=', offset: 2 },
+  { id: 'pingCodUsWest', url: 'https://dynamodb.us-west-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingCodEu', url: 'https://dynamodb.eu-west-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingCodAs', url: 'https://dynamodb.ap-northeast-1.amazonaws.com/?x=', offset: 2 },
+  { id: 'pingCodOce', url: 'https://dynamodb.ap-southeast-2.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingCodMe', url: 'https://dynamodb.me-south-1.amazonaws.com/?x=', offset: 1 },
+  { id: 'pingCodSa', url: 'https://dynamodb.sa-east-1.amazonaws.com/?x=', offset: 1 }
 ];
 
 async function pingGameEndpoint(url) {
@@ -1300,20 +1446,37 @@ if (isAutoTestEnabled) {
 
 setTimeout(refreshGamePings, 2000);
 
+// --- SETTINGS UI HANDLERS ---
+if (sizeSelect && window.api && window.api.getAppSize) {
+  window.api.getAppSize().then(size => {
+    sizeSelect.value = size || "large";
+  });
+  sizeSelect.addEventListener("change", (e) => {
+    if (e.target.value === "small") {
+      alert("Note: The 'Small' footprint prioritizes the dashboard and hides the top-right Minimize/Close buttons. You can use the System Tray to minimize or close the app!");
+    }
+    if (window.api.setAppSize) {
+      window.api.setAppSize(e.target.value);
+    }
+  });
+}
 
 
 // --- AUTO-UPDATER ENGINE ---
 
-let APP_VERSION = "4.0.0";
-try {
-  const versionRes = await fetch('../version.json');
-  if (versionRes.ok) {
-    const versionData = await versionRes.json();
-    APP_VERSION = versionData.version;
+import REAL0 from '../version.json';
+let APP_VERSION = REAL0.version;
+(async () => {
+  try {
+    const versionRes = await fetch('../version.json');
+    if (versionRes.ok) {
+      const versionData = await versionRes.json();
+      APP_VERSION = versionData.version;
+    }
+  } catch (e) {
+    console.log("Using static version fallback.");
   }
-} catch (e) {
-  console.log("Using static version fallback.");
-}
+})();
 
 console.log(APP_VERSION)
 // 2. Pointing to your custom version.json
@@ -1447,6 +1610,45 @@ if (githubLink) {
       window.api.openExternal("https://github.com/ash-kernel/exitping");
     } else {
       window.open("https://github.com/ash-kernel/exitping", "_blank");
+    }
+  });
+}
+
+// --- TAB SWITCHING & WINDOW CONTROLS ---
+
+const navBtns = document.querySelectorAll('.nav-block');
+const views = document.querySelectorAll('.saas-view');
+
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    navBtns.forEach(b => b.classList.remove('active'));
+    views.forEach(v => v.classList.remove('active'));
+
+    btn.classList.add('active');
+
+    const targetId = btn.getAttribute('data-target');
+    const targetView = document.getElementById('view-' + targetId);
+    if (targetView) {
+      targetView.classList.add('active');
+    }
+  });
+});
+
+const minimizeBtn = document.getElementById("minimizeBtn");
+const closeBtn = document.getElementById("closeBtn");
+
+if (minimizeBtn) {
+  minimizeBtn.addEventListener("click", () => {
+    if (window.api && window.api.minimizeWindow) {
+      window.api.minimizeWindow();
+    }
+  });
+}
+
+if (closeBtn) {
+  closeBtn.addEventListener("click", () => {
+    if (window.api && window.api.closeWindow) {
+      window.api.closeWindow();
     }
   });
 }

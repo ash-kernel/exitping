@@ -4,8 +4,9 @@ const https = require("https");
 const { runSpeedTest } = require("./core/speedtest_engine");
 const fs = require("fs");
 const os = require("os");
-const { spawn } = require("child_process");
+const { spawn, exec } = require("child_process");
 const net = require("net");
+const dns = require("dns");
 
 let win = null;
 let tray = null;
@@ -13,9 +14,9 @@ let isQuitting = false;
 let isExpandedState = false;
 
 const SIZES = {
-  small: { baseWidth: 340, baseHeight: 600, expandedWidth: 680 },
-  medium: { baseWidth: 380, baseHeight: 680, expandedWidth: 760 },
-  large: { baseWidth: 420, baseHeight: 750, expandedWidth: 840 }
+  small: { baseWidth: 800, baseHeight: 600, expandedWidth: 800 },
+  medium: { baseWidth: 960, baseHeight: 650, expandedWidth: 960 },
+  large: { baseWidth: 1160, baseHeight: 760, expandedWidth: 1160 }
 };
 
 // Disable Chromium HTTP disk cache in development to prevent index corruption/blockfile critical errors
@@ -30,27 +31,19 @@ if (!gotTheLock) {
 }
 
 // Required for Windows Action Center notifications to show up
-app.setAppUserModelId("com.ashkernel.exitping");
+app.setAppUserModelId("com.exitping.app");
 
 function positionWindow() {
-  if (!win) return;
-  const display = screen.getPrimaryDisplay();
-  const workArea = display.workArea;
-  const bounds = win.getBounds();
-
-  let x = workArea.x + workArea.width - bounds.width - 12;
-  let y = workArea.y + workArea.height - bounds.height - 12;
-
-  if (x < workArea.x) x = workArea.x;
-  if (y < workArea.y) y = workArea.y;
-
-  win.setPosition(x, y);
+  // Deprecated: We now center the window natively instead of placing it in the bottom-right corner.
+  if (win && !win.isDestroyed()) {
+    win.center();
+  }
 }
 
 function createWindow() {
   const config = getConfig();
-  const appSizeKey = config.appSize || "medium";
-  const size = SIZES[appSizeKey] || SIZES.medium;
+  const appSizeKey = config.appSize || "large";
+  const size = SIZES[appSizeKey] || SIZES.large;
   const initialWidth = size.baseWidth;
   const initialHeight = size.baseHeight;
 
@@ -61,9 +54,11 @@ function createWindow() {
     minHeight: initialHeight,
     frame: false,
     resizable: false,
-    alwaysOnTop: true, 
+    maximizable: false,
+    center: true,
     show: false,
     backgroundColor: "#050505", 
+    icon: path.join(__dirname, "../assets/icons/sample_logo.png"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -79,15 +74,10 @@ function createWindow() {
   }
 
   win.once("ready-to-show", () => {
-    positionWindow();
     if (!process.argv.includes('--hidden')) {
       win.show();
       win.focus();
     }
-  });
-
-  win.on("blur", () => {
-    if (win) win.hide();
   });
 
   win.on("close", (event) => {
@@ -97,6 +87,18 @@ function createWindow() {
     }
   });
 }
+
+// Window Control IPC Handlers
+ipcMain.on("minimize-window", () => {
+  if (win) win.minimize();
+});
+
+ipcMain.on("close-window", () => {
+  if (win) {
+    // Hide instead of quitting to keep it running in tray
+    win.hide();
+  }
+});
 
 function createTray() {
   try {
@@ -111,7 +113,6 @@ function createTray() {
         label: "OPEN",
         click: () => {
           if (win) {
-            positionWindow();
             win.show();
             win.focus();
           }
@@ -121,7 +122,6 @@ function createTray() {
         label: "RUN TEST",
         click: () => {
           if (win) {
-            positionWindow();
             win.show();
             win.focus();
             win.webContents.executeJavaScript('if (typeof runTest === "function") runTest();');
@@ -153,7 +153,6 @@ function createTray() {
       if (win.isVisible()) {
         win.hide();
       } else {
-        positionWindow();
         win.show();
         win.focus(); 
       }
@@ -210,7 +209,6 @@ function performSilentHealthCheck() {
 
 app.on("second-instance", () => {
   if (win) {
-    positionWindow();
     win.show();
     win.focus();
   }
@@ -243,10 +241,12 @@ ipcMain.handle("get-network-identity", async () => {
             ip: json.ip || "0.0.0.0", 
             isp: json.connection?.isp || json.connection?.org || "Network Active", 
             countryCode: json.country_code ? json.country_code.toLowerCase() : "un",
+            asn: json.connection?.asn ? `AS${json.connection.asn}` : "Unknown ASN",
+            type: json.type || "Unknown",
             isVpn: isVpn
           });
         } catch (e) { 
-          resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un", isVpn: false }); 
+          resolve({ ip: "Unknown", isp: "Unknown", countryCode: "un", asn: "Unknown", type: "Unknown", isVpn: false }); 
         }
       });
     });
@@ -265,8 +265,8 @@ ipcMain.on("toggle-expand", (event, isExpanded) => {
   if (!win) return;
   
   const config = getConfig();
-  const appSizeKey = config.appSize || "medium";
-  const size = SIZES[appSizeKey] || SIZES.medium;
+  const appSizeKey = config.appSize || "large";
+  const size = SIZES[appSizeKey] || SIZES.large;
   const targetWidth = isExpanded ? size.expandedWidth : size.baseWidth; 
   const bounds = win.getBounds();
 
@@ -280,7 +280,7 @@ ipcMain.on("toggle-expand", (event, isExpanded) => {
 });
 
 ipcMain.handle("get-app-size", () => {
-  return getConfig().appSize || "medium";
+  return getConfig().appSize || "large";
 });
 
 ipcMain.on("set-app-size", (event, newSizeKey) => {
@@ -289,20 +289,15 @@ ipcMain.on("set-app-size", (event, newSizeKey) => {
   saveConfig(config);
 
   if (win) {
-    const size = SIZES[newSizeKey] || SIZES.medium;
+    const size = SIZES[newSizeKey] || SIZES.large;
     const targetWidth = isExpandedState ? size.expandedWidth : size.baseWidth;
     const targetHeight = size.baseHeight;
 
     win.setMinimumSize(size.baseWidth, size.baseHeight);
     
-    const display = screen.getPrimaryDisplay();
-    const workArea = display.workArea;
-    const x = workArea.x + workArea.width - targetWidth - 12;
-    const y = workArea.y + workArea.height - targetHeight - 12;
-
     win.setBounds({
-      x: x < workArea.x ? workArea.x : x,
-      y: y < workArea.y ? workArea.y : y,
+      x: win.getBounds().x,
+      y: win.getBounds().y,
       width: targetWidth,
       height: targetHeight
     }, true);
@@ -327,6 +322,45 @@ ipcMain.handle("get-network-interfaces", () => {
     }
   }
   return results;
+});
+
+ipcMain.handle("get-full-network-info", async () => {
+  return new Promise((resolve) => {
+    const interfaces = os.networkInterfaces();
+    let activeIface = null;
+    
+    for (const name of Object.keys(interfaces)) {
+      for (const iface of interfaces[name]) {
+        if (iface.family === 'IPv4' && !iface.internal) {
+          activeIface = { name, ...iface };
+          break;
+        }
+      }
+      if (activeIface) break;
+    }
+    
+    const psCmd = `powershell -Command "Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter 'IPEnabled=TRUE' | Select-Object -ExpandProperty DNSServerSearchOrder"`;
+    
+    exec(psCmd, (error, stdout) => {
+      let dnsServers = [];
+      if (!error && stdout) {
+        dnsServers = stdout.split('\n').map(l => l.trim()).filter(l => l.length > 0 && l.includes('.'));
+      }
+      
+      // Fallback
+      if (!dnsServers || dnsServers.length === 0) {
+        try { dnsServers = dns.getServers(); } catch(e) {}
+      }
+      if (!dnsServers || dnsServers.length === 0) {
+        dnsServers = ["No DNS"];
+      }
+      
+      resolve({
+        interface: activeIface,
+        dnsServers: dnsServers
+      });
+    });
+  });
 });
 
 ipcMain.handle("geolocate-ip", async (event, ip) => {
@@ -407,6 +441,91 @@ ipcMain.on("start-traceroute", (event, targetHost) => {
 });
 
 
+// --- BACKEND IPC: DNS OPTIMIZER ---
+ipcMain.handle("test-dns-servers", async (event) => {
+  const dnsServers = [
+    { id: 'cloudflare', name: 'Cloudflare', primary: '1.1.1.1', secondary: '1.0.0.1' },
+    { id: 'google', name: 'Google Public DNS', primary: '8.8.8.8', secondary: '8.8.4.4' },
+    { id: 'quad9', name: 'Quad9', primary: '9.9.9.9', secondary: '149.112.112.112' },
+    { id: 'opendns', name: 'OpenDNS', primary: '208.67.222.222', secondary: '208.67.220.220' },
+    { id: 'adguard', name: 'AdGuard DNS', primary: '94.140.14.14', secondary: '94.140.15.15' }
+  ];
+
+  const { Resolver } = require('dns').promises;
+
+  const pingDns = async (ip) => {
+    return new Promise(async (resolve) => {
+      const resolver = new Resolver();
+      resolver.setServers([ip]);
+      
+      const start = performance.now();
+      
+      // Fallback timeout in case resolver hangs
+      const timeoutId = setTimeout(() => {
+        resolve(null);
+      }, 1200);
+
+      try {
+        await resolver.resolve4('google.com');
+        clearTimeout(timeoutId);
+        const latency = Math.round(performance.now() - start);
+        resolve(latency);
+      } catch (e) {
+        clearTimeout(timeoutId);
+        resolve(null);
+      }
+    });
+  };
+
+  const results = await Promise.all(dnsServers.map(async (server) => {
+    const pPing = await pingDns(server.primary);
+    const sPing = await pingDns(server.secondary);
+    let avg = null;
+    if (pPing !== null && sPing !== null) avg = Math.round((pPing + sPing) / 2);
+    else if (pPing !== null) avg = pPing;
+    else if (sPing !== null) avg = sPing;
+    
+    return { ...server, ping: avg };
+  }));
+
+  return results.filter(r => r.ping !== null).sort((a, b) => a.ping - b.ping);
+});
+
+ipcMain.handle("apply-dns", async (event, primary, secondary) => {
+  return new Promise((resolve) => {
+    const psScript = `Get-NetAdapter | Where-Object {$_.Status -eq 'Up'} | Set-DnsClientServerAddress -ServerAddresses ${primary},${secondary}`;
+    const scriptPath = path.join(os.tmpdir(), "exitping_dns.ps1");
+    fs.writeFileSync(scriptPath, psScript, 'utf8');
+    const cmd = `powershell -Command "Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList '-ExecutionPolicy Bypass -File \\"${scriptPath}\\"'"`;
+    exec(cmd, (error) => {
+      if (error) resolve({ success: false, error: error.message });
+      else resolve({ success: true });
+    });
+  });
+});
+
+ipcMain.handle("reset-dns", async (event) => {
+  return new Promise((resolve) => {
+    const psScript = `Get-NetAdapter | Where-Object {$_.Status -eq 'Up'} | Set-DnsClientServerAddress -ResetServerAddresses`;
+    const scriptPath = path.join(os.tmpdir(), "exitping_dns_reset.ps1");
+    fs.writeFileSync(scriptPath, psScript, 'utf8');
+    const cmd = `powershell -Command "Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList '-ExecutionPolicy Bypass -File \\"${scriptPath}\\"'"`;
+    exec(cmd, (error) => {
+      if (error) resolve({ success: false, error: error.message });
+      else resolve({ success: true });
+    });
+  });
+});
+
+ipcMain.handle("flush-dns", async (event) => {
+  return new Promise((resolve) => {
+    exec("ipconfig /flushdns", (err, stdout, stderr) => {
+      if (err) resolve({ success: false, error: err.message });
+      else resolve({ success: true });
+    });
+  });
+});
+
 // --- BACKEND IPC: SPEEDTEST ---
 ipcMain.on("start-speedtest", async (event, localAddress) => {
   try {
@@ -478,6 +597,6 @@ ipcMain.on("set-silent-check", (event, enable) => {
   saveConfig(config);
 });
 
-app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
-});
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });

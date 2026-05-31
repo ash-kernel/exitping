@@ -111,7 +111,7 @@ function downloadTest(server, testContext, progressCallback, duration = 8000) {
       const finalElapsed = (performance.now() - startTime) / 1000;
       const finalSpeed = (totalBytes * 8) / (finalElapsed * 1000000);
       
-      resolve(finalSpeed > 0 ? finalSpeed : 0);
+      resolve({ speed: finalSpeed > 0 ? finalSpeed : 0, bytes: totalBytes });
     }, duration);
   });
 }

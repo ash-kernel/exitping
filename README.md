@@ -3,7 +3,7 @@
 </div>
 
 <br> <br>
-Lightweight desktop network diagnostics engine with real-time latency monitoring, speed testing, traceroutes, and live game RTT analysis inside a modern tray-based interface.
+Lightweight desktop network diagnostics engine with real-time latency monitoring, speed testing, traceroutes, DNS optimization, and live game RTT analysis inside a modern glassmorphism tray-based interface.
 
 [Download](https://github.com/ash-kernel/exitping/releases) • [Security Issues](https://github.com/ash-kernel/exitping/issues) • [Preview](PREVIEW.md)
 
@@ -11,23 +11,24 @@ Lightweight desktop network diagnostics engine with real-time latency monitoring
 
 ## Features
 
-- Real-time latency and jitter monitoring
-- Multi-threaded speed testing with warmup filtering
-- VPN-safe socket fallback handling
-- Visual traceroutes with geolocation data
-- Save and recheck routes instantly
-- Live RTT monitoring for:
-  - Valorant
-  - CS2
-  - League of Legends
-  - Fortnite
-  - Apex Legends
-  - Dota 2
-- Resizable UI scaling modes
-- System tray startup support
-- Low internet notifications
-- Theme support
-- CSP-secured Electron architecture
+### Global Game Server Ping Engine
+Monitor real-time Round Trip Times (RTT) across global AWS, Azure, and Google Cloud gaming endpoints before you queue up.
+Includes comprehensive regional data centers (with visual country flags) for:
+- Overwatch 2
+- Rainbow Six Siege
+- PUBG
+- Call of Duty
+
+### Network Optimization Toolkit
+- **DNS Dashboard**: Instantly flush your DNS cache and optimize DNS resolver speeds with a single click.
+- **Diagnostics Dashboard**: Reset network adapters, analyze bufferbloat, and troubleshoot packet loss.
+- **Traceroutes**: Visual ICMP route tracking with IP geolocation mapping.
+
+### Core Diagnostics
+- **Live Latency Graphing**: Low-overhead packet monitoring with background scaling.
+- **Speed Testing**: Multi-threaded DL/UL testing with automated warmup cycles for accurate metrics.
+- **Tray Integration**: Sits silently in your Windows system tray, ready when you need it.
+- **Dynamic Scaling**: Responsive UI with seamless window resizing logic.
 
 ---
 
@@ -37,16 +38,7 @@ Download the latest installer from the [Releases](https://github.com/ash-kernel/
 
 **Requirements**
 - Windows 10/11 (64-bit)
-
----
-
-## UI Scaling
-
-| Mode | Window Size | Expanded |
-|------|-------------|-----------|
-| Small | 340×600 | 680×600 |
-| Medium | 380×680 | 760×680 |
-| Large | 420×750 | 840×750 |
+- Active internet connection
 
 ---
 

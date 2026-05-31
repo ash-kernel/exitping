@@ -28,6 +28,7 @@ contextBridge.exposeInMainWorld("api", {
   // Network Identity & Interface Utilities
   getNetworkIdentity: () => ipcRenderer.invoke("get-network-identity"),
   getNetworkInterfaces: () => ipcRenderer.invoke("get-network-interfaces"),
+  getFullNetworkInfo: () => ipcRenderer.invoke("get-full-network-info"),
 
   // Geolocation & Latency Socket Engines
   geolocateIp: (ip) => ipcRenderer.invoke("geolocate-ip", ip),
@@ -40,6 +41,12 @@ contextBridge.exposeInMainWorld("api", {
     ipcRenderer.on("traceroute-data", (_, data) => cb(data));
   },
 
+  // DNS Optimizer
+  testDnsServers: () => ipcRenderer.invoke("test-dns-servers"),
+  applyDns: (primary, secondary) => ipcRenderer.invoke("apply-dns", primary, secondary),
+  resetDns: () => ipcRenderer.invoke("reset-dns"),
+  flushDns: () => ipcRenderer.invoke("flush-dns"),
+
   // Sizing Preferences
   setAppSize: (size) => ipcRenderer.send("set-app-size", size),
   getAppSize: () => ipcRenderer.invoke("get-app-size"),
@@ -49,5 +56,9 @@ contextBridge.exposeInMainWorld("api", {
   openLink: (url) => ipcRenderer.send("open-external", url),
 
   // Native Notifications
-  showNotification: (title, body) => ipcRenderer.send("show-notification", title, body)
+  showNotification: (title, body) => ipcRenderer.send("show-notification", title, body),
+
+  // Window Controls
+  minimizeWindow: () => ipcRenderer.send("minimize-window"),
+  closeWindow: () => ipcRenderer.send("close-window")
 });

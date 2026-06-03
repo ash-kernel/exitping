@@ -1,3 +1,5 @@
+<!-- © 2026 ExitPing — All rights reserved. -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +11,9 @@
   <title>ExitPing</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
   <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="./styles/style.css">
 </head>
@@ -22,38 +26,69 @@
         <img src="centre.png" alt="ExitPing Logo" class="nav-logo">
         <span class="nav-brand">ExitPing <span class="badge">PRO</span></span>
       </div>
-      
+
       <nav class="nav-center">
         <button class="nav-block active" data-target="dashboard">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
           Dashboard
         </button>
         <button class="nav-block" data-target="games">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
           Game Servers
         </button>
         <button class="nav-block" data-target="speedtest">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+          </svg>
           Speed Test
         </button>
         <button class="nav-block" data-target="tools">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+            </path>
+          </svg>
           Diagnostics
         </button>
       </nav>
-      
+
       <div class="nav-right">
         <button id="dashboardSettingsBtn" class="nav-block secondary" data-target="settings">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+            </path>
+          </svg>
           Preferences
         </button>
-        
+
         <div class="header-window-controls">
           <button id="minimizeBtn" class="saas-win-btn minimize" title="Minimize">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
           </button>
           <button id="closeBtn" class="saas-win-btn close" title="Hide to Tray">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </button>
         </div>
       </div>
@@ -71,7 +106,13 @@
             <div class="info-pill">
               <span class="pill-label">IP</span>
               <span id="dashIp" class="pill-value">Detecting...</span>
-              <svg id="vpnBadgeDash" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+              <svg id="vpnBadgeDash" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                fill="none" stroke="var(--accent-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                style="display: none;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 16v-4"></path>
+                <path d="M12 8h.01"></path>
+              </svg>
             </div>
             <div class="info-pill">
               <span class="pill-label">ISP</span>
@@ -138,7 +179,8 @@
               <div class="card-header" style="margin-bottom: 8px;">
                 <h3>Recent Tests</h3>
               </div>
-              <div id="historyListContainer" class="history-list" style="max-height: 120px; overflow-y: auto; padding-right: 4px;">
+              <div id="historyListContainer" class="history-list"
+                style="max-height: 120px; overflow-y: auto; padding-right: 4px;">
                 <div class="empty-state">No historical tests found.</div>
               </div>
             </div>
@@ -161,7 +203,10 @@
               </div>
             </div>
             <button id="startBtn" class="engine-btn primary">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="btn-icon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
+                class="btn-icon">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
               START TEST
             </button>
           </div>
@@ -221,7 +266,8 @@
         <header class="view-header">
           <h2>Game Servers</h2>
           <button id="refreshGamePingsBtn" class="icon-btn primary-outline" title="Refresh Pings">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="23 4 23 10 17 10"></polyline>
               <polyline points="1 20 1 14 7 14"></polyline>
               <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
@@ -240,24 +286,66 @@
                   <span class="game-name">Valorant</span>
                 </div>
                 <div class="accordion-chevron">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇺🇸 NA East (N. Virginia)</span><span id="pingValNaEast" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/un.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA Central (Ohio)</span><span id="pingValNaCentral" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇺🇸 NA West (N. Cali)</span><span id="pingValNaWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/br.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷 SA (São Paulo)</span><span id="pingValSa" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/gb.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU West (London)</span><span id="pingValEuWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/de.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU Central (Frankfurt)</span><span id="pingValEuCentral" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/in.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">AP South (Mumbai)</span><span id="pingValMumbai" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/sg.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">AP SE (Singapore)</span><span id="pingValSingapore" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/jp.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">AP NE (Tokyo)</span><span id="pingValTokyo" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/au.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE (Sydney)</span><span id="pingValOce" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA Central (Texas)</span><span id="pingValTexas" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/cl.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">LATAM (Santiago)</span><span id="pingValLatam" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/fr.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU West (Paris)</span><span id="pingValParis" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇺🇸
+                      NA East (N. Virginia)</span><span id="pingValNaEast" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/un.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA
+                      Central (Ohio)</span><span id="pingValNaCentral" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇺🇸
+                      NA West (N. Cali)</span><span id="pingValNaWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/br.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷
+                      SA (São Paulo)</span><span id="pingValSa" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/gb.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      West (London)</span><span id="pingValEuWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/de.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      Central (Frankfurt)</span><span id="pingValEuCentral" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/in.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">AP
+                      South (Mumbai)</span><span id="pingValMumbai" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/sg.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">AP
+                      SE (Singapore)</span><span id="pingValSingapore" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/jp.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">AP
+                      NE (Tokyo)</span><span id="pingValTokyo" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/au.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE
+                      (Sydney)</span><span id="pingValOce" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA
+                      Central (Texas)</span><span id="pingValTexas" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/cl.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">LATAM
+                      (Santiago)</span><span id="pingValLatam" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/fr.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      West (Paris)</span><span id="pingValParis" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -270,25 +358,70 @@
                   <span class="game-name">Counter-Strike 2</span>
                 </div>
                 <div class="accordion-chevron">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US East (Sterling)</span><span id="pingCsUsEast" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US West (Seattle)</span><span id="pingCsUsWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/es.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU West (Madrid)</span><span id="pingCsEuWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/se.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU North (Stockholm)</span><span id="pingCsEuNorth" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/de.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU Central (Frankfurt)</span><span id="pingCsFrankfurt" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/ae.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Middle East (Dubai)</span><span id="pingCsDubai" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/in.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Chennai)</span><span id="pingCsChennai" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/hk.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Hong Kong)</span><span id="pingCsHk" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/jp.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Tokyo)</span><span id="pingCsTokyo" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/au.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE (Sydney)</span><span id="pingCsSydney" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/za.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Africa (Johannesburg)</span><span id="pingCsAfrica" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US Central (Chicago)</span><span id="pingCsChicago" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/br.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷 SA (São Paulo)</span><span id="pingCsSaoPaulo" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/kr.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Seoul)</span><span id="pingCsSeoul" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      East (Sterling)</span><span id="pingCsUsEast" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      West (Seattle)</span><span id="pingCsUsWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/es.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      West (Madrid)</span><span id="pingCsEuWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/se.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      North (Stockholm)</span><span id="pingCsEuNorth" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/de.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      Central (Frankfurt)</span><span id="pingCsFrankfurt" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/ae.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Middle
+                      East (Dubai)</span><span id="pingCsDubai" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/in.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Chennai)</span><span id="pingCsChennai" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/hk.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Hong Kong)</span><span id="pingCsHk" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/jp.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Tokyo)</span><span id="pingCsTokyo" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/au.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE
+                      (Sydney)</span><span id="pingCsSydney" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/za.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Africa
+                      (Johannesburg)</span><span id="pingCsAfrica" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      Central (Chicago)</span><span id="pingCsChicago" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/br.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷
+                      SA (São Paulo)</span><span id="pingCsSaoPaulo" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/kr.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Seoul)</span><span id="pingCsSeoul" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -301,23 +434,62 @@
                   <span class="game-name">League of Legends</span>
                 </div>
                 <div class="accordion-chevron">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA (Chicago)</span><span id="pingLolNa" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/nl.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EUW (Amsterdam)</span><span id="pingLolEuw" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/de.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EUNE (Frankfurt)</span><span id="pingLolEune" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/un.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🏳️ BR (São Paulo)</span><span id="pingLolBr" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/kr.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">KR (Seoul)</span><span id="pingLolKr" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/jp.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">JP (Tokyo)</span><span id="pingLolJp" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/sg.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">SEA (Singapore)</span><span id="pingLolSg" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/tw.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">TW (Taiwan)</span><span id="pingLolTw" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/au.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE (Sydney)</span><span id="pingLolOce" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">LAN (Miami)</span><span id="pingLolLan" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/cl.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">LAS (Chile)</span><span id="pingLolLas" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/ru.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">RU (Moscow)</span><span id="pingLolRu" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA
+                      (Chicago)</span><span id="pingLolNa" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/nl.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EUW
+                      (Amsterdam)</span><span id="pingLolEuw" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/de.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EUNE
+                      (Frankfurt)</span><span id="pingLolEune" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/un.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🏳️
+                      BR (São Paulo)</span><span id="pingLolBr" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/kr.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">KR
+                      (Seoul)</span><span id="pingLolKr" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/jp.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">JP
+                      (Tokyo)</span><span id="pingLolJp" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/sg.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">SEA
+                      (Singapore)</span><span id="pingLolSg" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/tw.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">TW
+                      (Taiwan)</span><span id="pingLolTw" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/au.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE
+                      (Sydney)</span><span id="pingLolOce" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">LAN
+                      (Miami)</span><span id="pingLolLan" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/cl.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">LAS
+                      (Chile)</span><span id="pingLolLas" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/ru.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">RU
+                      (Moscow)</span><span id="pingLolRu" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -330,23 +502,62 @@
                   <span class="game-name">Fortnite</span>
                 </div>
                 <div class="accordion-chevron">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇺🇸 NA East (N. Virginia)</span><span id="pingFnNaEast" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA Central (Dallas)</span><span id="pingFnNaCentral" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/un.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA West (Oregon)</span><span id="pingFnNaWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/gb.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU West (London)</span><span id="pingFnEuWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/de.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU Central (Frankfurt)</span><span id="pingFnEuCentral" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/jp.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Tokyo)</span><span id="pingFnAsiaTokyo" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/sg.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Singapore)</span><span id="pingFnAsiaSg" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/au.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE (Sydney)</span><span id="pingFnOce" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/br.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷 Brazil (São Paulo)</span><span id="pingFnBr" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/in.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Middle East (Mumbai)</span><span id="pingFnMe" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/bh.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Middle East (Bahrain)</span><span id="pingFnBahrain" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/in.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Mumbai)</span><span id="pingFnMumbai" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇺🇸
+                      NA East (N. Virginia)</span><span id="pingFnNaEast" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA
+                      Central (Dallas)</span><span id="pingFnNaCentral" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/un.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA
+                      West (Oregon)</span><span id="pingFnNaWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/gb.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      West (London)</span><span id="pingFnEuWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/de.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      Central (Frankfurt)</span><span id="pingFnEuCentral" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/jp.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Tokyo)</span><span id="pingFnAsiaTokyo" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/sg.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Singapore)</span><span id="pingFnAsiaSg" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/au.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE
+                      (Sydney)</span><span id="pingFnOce" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/br.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷
+                      Brazil (São Paulo)</span><span id="pingFnBr" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/in.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Middle
+                      East (Mumbai)</span><span id="pingFnMe" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/bh.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Middle
+                      East (Bahrain)</span><span id="pingFnBahrain" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/in.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Mumbai)</span><span id="pingFnMumbai" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -359,22 +570,58 @@
                   <span class="game-name">Apex Legends</span>
                 </div>
                 <div class="accordion-chevron">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US East (Virginia)</span><span id="pingApexUsEast" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US West (Oregon)</span><span id="pingApexUsWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/de.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU West (Frankfurt)</span><span id="pingApexEuWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/gb.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU East (London)</span><span id="pingApexEuEast" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/sg.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Singapore)</span><span id="pingApexAsiaSg" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/jp.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Tokyo)</span><span id="pingApexAsiaTokyo" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/au.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE (Sydney)</span><span id="pingApexOce" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/br.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷 Brazil (São Paulo)</span><span id="pingApexSa" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/de.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Europe (Frankfurt)</span><span id="pingApexFrankfurt" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US Central (Iowa)</span><span id="pingApexIowa" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/tw.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Taiwan)</span><span id="pingApexTaiwan" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      East (Virginia)</span><span id="pingApexUsEast" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      West (Oregon)</span><span id="pingApexUsWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/de.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      West (Frankfurt)</span><span id="pingApexEuWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/gb.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      East (London)</span><span id="pingApexEuEast" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/sg.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Singapore)</span><span id="pingApexAsiaSg" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/jp.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Tokyo)</span><span id="pingApexAsiaTokyo" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/au.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE
+                      (Sydney)</span><span id="pingApexOce" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/br.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷
+                      Brazil (São Paulo)</span><span id="pingApexSa" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/de.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Europe
+                      (Frankfurt)</span><span id="pingApexFrankfurt" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      Central (Iowa)</span><span id="pingApexIowa" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/tw.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Taiwan)</span><span id="pingApexTaiwan" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -387,24 +634,66 @@
                   <span class="game-name">Dota 2</span>
                 </div>
                 <div class="accordion-chevron">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US East (Sterling)</span><span id="pingDotaUsEast" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US West (Seattle)</span><span id="pingDotaUsWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/lu.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Europe West (Luxembourg)</span><span id="pingDotaEuWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/at.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Europe East (Vienna)</span><span id="pingDotaEuEast" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/sg.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Singapore)</span><span id="pingDotaSg" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/kr.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Seoul)</span><span id="pingDotaKr" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/au.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE (Sydney)</span><span id="pingDotaOce" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/pe.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">South America (Peru)</span><span id="pingDotaPeru" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/cl.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">South America (Chile)</span><span id="pingDotaChile" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/za.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Africa (Johannesburg)</span><span id="pingDotaAfrica" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/se.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Europe (Stockholm)</span><span id="pingDotaStockholm" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/ae.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Middle East (Dubai)</span><span id="pingDotaDubai" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/ar.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">SA (Argentina)</span><span id="pingDotaArgentina" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      East (Sterling)</span><span id="pingDotaUsEast" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      West (Seattle)</span><span id="pingDotaUsWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/lu.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Europe
+                      West (Luxembourg)</span><span id="pingDotaEuWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/at.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Europe
+                      East (Vienna)</span><span id="pingDotaEuEast" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/sg.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Singapore)</span><span id="pingDotaSg" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/kr.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Seoul)</span><span id="pingDotaKr" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/au.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE
+                      (Sydney)</span><span id="pingDotaOce" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/pe.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">South
+                      America (Peru)</span><span id="pingDotaPeru" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/cl.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">South
+                      America (Chile)</span><span id="pingDotaChile" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/za.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Africa
+                      (Johannesburg)</span><span id="pingDotaAfrica" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/se.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Europe
+                      (Stockholm)</span><span id="pingDotaStockholm" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/ae.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Middle
+                      East (Dubai)</span><span id="pingDotaDubai" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/ar.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">SA
+                      (Argentina)</span><span id="pingDotaArgentina" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -413,24 +702,55 @@
             <div class="accordion-item" data-id="ow2">
               <div class="game-item accordion-trigger card glass">
                 <div class="game-info">
-                  <img src="game_logos/ow2.png" alt="Overwatch 2" class="game-icon" onerror="this.src='../assets/icons/tray.png'">
+                  <img src="game_logos/ow2.png" alt="Overwatch 2" class="game-icon"
+                    onerror="this.src='../assets/icons/tray.png'">
                   <span class="game-name">Overwatch 2</span>
                 </div>
                 <div class="accordion-chevron">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Americas (West)</span><span id="pingOw2UsWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/un.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Americas (East)</span><span id="pingOw2UsEast" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/eu.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Europe (West)</span><span id="pingOw2Eu" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/kr.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Seoul)</span><span id="pingOw2Kr" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/jp.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Tokyo)</span><span id="pingOw2Jp" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US Central (Chicago)</span><span id="pingOw2Chicago" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/br.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷 Brazil (São Paulo)</span><span id="pingOw2Brazil" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/au.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE (Sydney)</span><span id="pingOw2Sydney" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/tw.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Taiwan</span><span id="pingOw2Taiwan" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Americas
+                      (West)</span><span id="pingOw2UsWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/un.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Americas
+                      (East)</span><span id="pingOw2UsEast" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/eu.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Europe
+                      (West)</span><span id="pingOw2Eu" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/kr.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Seoul)</span><span id="pingOw2Kr" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/jp.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Tokyo)</span><span id="pingOw2Jp" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      Central (Chicago)</span><span id="pingOw2Chicago" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/br.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷
+                      Brazil (São Paulo)</span><span id="pingOw2Brazil" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/au.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE
+                      (Sydney)</span><span id="pingOw2Sydney" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/tw.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Taiwan</span><span
+                      id="pingOw2Taiwan" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -439,24 +759,55 @@
             <div class="accordion-item" data-id="r6s">
               <div class="game-item accordion-trigger card glass">
                 <div class="game-info">
-                  <img src="game_logos/r6s.png" alt="Rainbow Six Siege" class="game-icon" onerror="this.src='../assets/icons/tray.png'">
+                  <img src="game_logos/r6s.png" alt="Rainbow Six Siege" class="game-icon"
+                    onerror="this.src='../assets/icons/tray.png'">
                   <span class="game-name">Rainbow Six Siege</span>
                 </div>
                 <div class="accordion-chevron">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US East (Virginia)</span><span id="pingR6sUsEast" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US West (California)</span><span id="pingR6sUsWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/un.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US Central (Iowa)</span><span id="pingR6sUsCentral" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/nl.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU West (Netherlands)</span><span id="pingR6sEuWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/ie.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU North (Ireland)</span><span id="pingR6sEuNorth" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/jp.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Japan)</span><span id="pingR6sJp" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/au.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE (Sydney)</span><span id="pingR6sSydney" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/br.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷 Brazil (São Paulo)</span><span id="pingR6sBrazil" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/za.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Africa (South Africa)</span><span id="pingR6sSouthAfrica" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      East (Virginia)</span><span id="pingR6sUsEast" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      West (California)</span><span id="pingR6sUsWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/un.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      Central (Iowa)</span><span id="pingR6sUsCentral" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/nl.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      West (Netherlands)</span><span id="pingR6sEuWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/ie.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      North (Ireland)</span><span id="pingR6sEuNorth" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/jp.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Japan)</span><span id="pingR6sJp" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/au.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE
+                      (Sydney)</span><span id="pingR6sSydney" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/br.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷
+                      Brazil (São Paulo)</span><span id="pingR6sBrazil" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/za.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Africa
+                      (South Africa)</span><span id="pingR6sSouthAfrica" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -465,22 +816,47 @@
             <div class="accordion-item" data-id="pubg">
               <div class="game-item accordion-trigger card glass">
                 <div class="game-info">
-                  <img src="game_logos/pubg.png" alt="PUBG" class="game-icon" onerror="this.src='../assets/icons/tray.png'">
+                  <img src="game_logos/pubg.png" alt="PUBG" class="game-icon"
+                    onerror="this.src='../assets/icons/tray.png'">
                   <span class="game-name">PUBG</span>
                 </div>
                 <div class="accordion-chevron">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA (Virginia)</span><span id="pingPubgNa" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/de.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU (Frankfurt)</span><span id="pingPubgEu" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/kr.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">AS (Seoul)</span><span id="pingPubgAs" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/sg.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">SEA (Singapore)</span><span id="pingPubgSg" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/kr.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">AS (Seoul)</span><span id="pingPubgSeoul" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/au.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE (Sydney)</span><span id="pingPubgOce" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/br.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷 Brazil (São Paulo)</span><span id="pingPubgSa" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">NA
+                      (Virginia)</span><span id="pingPubgNa" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/de.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      (Frankfurt)</span><span id="pingPubgEu" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/kr.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">AS
+                      (Seoul)</span><span id="pingPubgAs" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/sg.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">SEA
+                      (Singapore)</span><span id="pingPubgSg" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/kr.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">AS
+                      (Seoul)</span><span id="pingPubgSeoul" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/au.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE
+                      (Sydney)</span><span id="pingPubgOce" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/br.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷
+                      Brazil (São Paulo)</span><span id="pingPubgSa" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -489,22 +865,47 @@
             <div class="accordion-item" data-id="cod">
               <div class="game-item accordion-trigger card glass">
                 <div class="game-info">
-                  <img src="game_logos/cod.png" alt="Call of Duty" class="game-icon" onerror="this.src='../assets/icons/tray.png'">
+                  <img src="game_logos/cod.png" alt="Call of Duty" class="game-icon"
+                    onerror="this.src='../assets/icons/tray.png'">
                   <span class="game-name">Call of Duty</span>
                 </div>
                 <div class="accordion-chevron">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
               </div>
               <div class="accordion-content">
                 <div class="sub-server-list">
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US East (Chicago)</span><span id="pingCodUsEast" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/us.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US West (Los Angeles)</span><span id="pingCodUsWest" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/gb.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU (London)</span><span id="pingCodEu" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/jp.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia (Tokyo)</span><span id="pingCodAs" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/au.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE (Sydney)</span><span id="pingCodOce" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/bh.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Middle East (Bahrain)</span><span id="pingCodMe" class="game-ping">-- ms</span></div>
-                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img class="country-flag" src="https://flagcdn.com/w20/br.png" style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷 Brazil (São Paulo)</span><span id="pingCodSa" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      East (Chicago)</span><span id="pingCodUsEast" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/us.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">US
+                      West (Los Angeles)</span><span id="pingCodUsWest" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/gb.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">EU
+                      (London)</span><span id="pingCodEu" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/jp.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Asia
+                      (Tokyo)</span><span id="pingCodAs" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/au.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">OCE
+                      (Sydney)</span><span id="pingCodOce" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/bh.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">Middle
+                      East (Bahrain)</span><span id="pingCodMe" class="game-ping">-- ms</span></div>
+                  <div class="sub-server-item"><span style="display: flex; align-items: center;"><img
+                        class="country-flag" src="https://flagcdn.com/w20/br.png"
+                        style="width:16px; height:auto; margin-right:6px; vertical-align: middle; border-radius: 2px;">🇧🇷
+                      Brazil (São Paulo)</span><span id="pingCodSa" class="game-ping">-- ms</span></div>
                 </div>
               </div>
             </div>
@@ -528,10 +929,14 @@
             <div class="diag-col-left">
               <!-- Network Details Accordion -->
               <div class="accordion-group card glass" id="networkDetailsTrigger" style="margin-bottom: 20px;">
-                <div class="accordion-trigger" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="accordion-trigger"
+                  style="display: flex; justify-content: space-between; align-items: center;">
                   <h3 style="font-size: 14px; font-weight: 600;">Advanced Network Details</h3>
                   <div class="accordion-chevron">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                   </div>
                 </div>
                 <div class="accordion-content">
@@ -550,7 +955,7 @@
                   <button id="clearTraceBtn" class="btn secondary">Clear</button>
                   <button id="bookmarkTraceBtn" class="btn secondary" disabled>★ Save</button>
                 </div>
-                
+
                 <div id="traceHopsList" class="trace-hops-container card inset">
                   <div class="empty-state">Enter a host and click Trace to begin diagnostics.</div>
                 </div>
@@ -658,18 +1063,22 @@
                 <option value="">Default Route</option>
               </select>
             </div>
-            
+
             <div class="settings-footer">
               <span>© 2026 ExitPing | All rights reserved</span>
               <a href="https://github.com/ash-kernel/exitping" id="githubLink" class="github-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
                 Source Code
               </a>
             </div>
           </div>
         </div>
       </section>
-      
+
       <!-- Keep legacy IDs available for app.js if they were removed from DOM above -->
       <div style="display:none;">
         <button id="closeSettingsBtn"></button>
@@ -688,11 +1097,17 @@
     <div class="update-box">
       <div class="update-icon-wrapper">
         <div class="update-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 20 8 16"></polyline><line x1="12" y1="12" x2="12" y2="20"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 16 12 20 8 16"></polyline>
+            <line x1="12" y1="12" x2="12" y2="20"></line>
+            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+          </svg>
         </div>
       </div>
       <h2>Update Available</h2>
-      <p>A new version (<span id="newVersionTag"></span>) is available. You are currently running version <span id="currentVersionTag"></span>.</p>
+      <p>A new version (<span id="newVersionTag"></span>) is available. You are currently running version <span
+          id="currentVersionTag"></span>.</p>
       <div class="update-actions">
         <button id="skipUpdateBtn" class="btn secondary">Skip</button>
         <button id="downloadUpdateBtn" class="btn primary">Download Update</button>
@@ -700,4 +1115,5 @@
     </div>
   </div>
 </body>
+
 </html>

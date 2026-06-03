@@ -9,6 +9,16 @@ Lightweight desktop network diagnostics engine with real-time latency monitoring
 
 ---
 
+## Featured
+
+<div align="center">
+  <img src="./assets/readme/featured/featured_1.png" width="48%">
+  &nbsp;
+  <img src="./assets/readme/featured/featured_2.png" width="48%">
+</div>
+
+---
+
 ## Features
 
 ### Global Game Server Ping Engine

@@ -2,6 +2,12 @@
 
 A clean, modern preview of the app UI.
 
+## Featured
+
+![ExitPing featured 1](./assets/readme/featured/featured_1.png)
+
+![ExitPing featured 2](./assets/readme/featured/featured_2.png)
+
 ## Screenshots
 
 ![ExitPing preview 1](./assets/readme/preview_1.png)
